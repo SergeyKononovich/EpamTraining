@@ -6,22 +6,6 @@ using System.Threading.Tasks;
 
 namespace Task1_TaxiStation
 {
-    public enum EngineType
-    {
-        Electric,
-        Gasoline,
-        Diesel,
-        Gas
-    }
-
-    public interface ICarSpecifications
-    {
-        EngineType EngineType { get; }
-        int MaxSpeedKPH { get; set; }
-        int NumberOfSeats { get; set; }
-        int AverageCostOfKilometerBYB { get; set; }
-    }
-
     public interface ICar
     {
         string Brand { get; }

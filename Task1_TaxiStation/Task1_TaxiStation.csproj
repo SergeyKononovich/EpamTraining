@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericCollectionsExtensionMethods.cs" />
     <Compile Include="ICar.cs" />
+    <Compile Include="ICarSpecifications.cs" />
+    <Compile Include="IExtendedCollection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiStation.cs" />
