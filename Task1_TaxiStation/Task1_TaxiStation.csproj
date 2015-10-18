@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CarBase.cs" />
     <Compile Include="CarSpecificationsBase.cs" />
+    <Compile Include="ElectricCarSpecifications.cs" />
     <Compile Include="GenericCollectionsExtensionMethods.cs" />
     <Compile Include="ICar.cs" />
     <Compile Include="ICarSpecifications.cs" />

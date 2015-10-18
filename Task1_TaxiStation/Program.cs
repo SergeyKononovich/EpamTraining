@@ -12,6 +12,7 @@ namespace Task1_TaxiStation
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
