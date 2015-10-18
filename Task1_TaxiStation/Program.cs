@@ -1,5 +1,5 @@
 ﻿using System;
-
+using static System.Console;
 
 namespace Task1_TaxiStation
 {
@@ -10,45 +10,41 @@ namespace Task1_TaxiStation
             ExtendedList<ICar> cars = GetCars();
             TaxiStation myTaxiStation = new TaxiStation(cars);
 
+            WriteLine("Before sorting:\n");
+            WriteLine(myTaxiStation);
 
-            Console.WriteLine("Before sorting:\n");
-            foreach (var car in myTaxiStation.Cars)
-            {
-                Console.WriteLine(car);
-            }
-
-            Console.WriteLine("\n\nAfter sorting by AverageCostOfKilometerBYB:\n");
+            WriteLine("\nAfter sorting by AverageCostOfKilometerBYB:\n");
             myTaxiStation.SortCars(x => x.Specifications.AverageCostOfKilometerBYB);
-            foreach (var car in myTaxiStation.Cars)
-            {
-                Console.WriteLine(car);
-            }
-            
+            WriteLine(myTaxiStation);
+
             myTaxiStation.TryAddCar(cars[0]);
             myTaxiStation.TryAddCar(cars[2]);
-            Console.WriteLine("\n\nAfter adding used cars:\n");
-            foreach (var car in myTaxiStation.Cars)
-            {
-                Console.WriteLine(car);
-            }
+            WriteLine("\nAfter adding used cars:\n");
+            WriteLine(myTaxiStation);
 
             myTaxiStation.TryRemoveCar(cars[0]);
             myTaxiStation.TryRemoveCar(cars[2]);
-            Console.WriteLine("\n\nAfter remove used cars:\n");
-            foreach (var car in myTaxiStation.Cars)
-            {
-                Console.WriteLine(car);
-            }
+            WriteLine("\nAfter remove used cars:\n");
+            WriteLine(myTaxiStation);
 
             myTaxiStation.TryAddCar(cars[0]);
             myTaxiStation.TryAddCar(cars[2]);
-            Console.WriteLine("\n\nAfter adding removed cars:\n");
-            foreach (var car in myTaxiStation.Cars)
-            {
-                Console.WriteLine(car);
-            }
+            WriteLine("\nAfter adding removed cars:\n");
+            WriteLine(myTaxiStation);
 
-            Console.ReadKey();
+            WriteLine("\nSearch car with speed in the range:\n");
+            WriteLine("Enter min speed: ");
+            string temp = ReadLine() ?? "0";
+            int min = int.Parse(temp);
+            WriteLine("Enter max speed: ");
+            temp = ReadLine() ?? "100";
+            int max = int.Parse(temp);
+            WriteLine($"First car with speed in the range [{min}, {max}]:");
+            ICar car = myTaxiStation.FirstCarOrDefault(TaxiStationHelper.SpeedBetweenPredicate(min, max));
+            string ans = car?.ToString() ?? "Not found\n";
+            WriteLine(ans);
+
+            ReadKey();
         }
 
         static ExtendedList<ICar> GetCars()

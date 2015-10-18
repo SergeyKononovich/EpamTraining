@@ -19,7 +19,7 @@ namespace Task1_TaxiStation
         public override string ToString()
         {
             return base.ToString() +
-                   $"-Full charging time (h): {FullChargingTime.Hours}\n";
+                   $"------Full charging time (h): {FullChargingTime.Hours}\n";
         }
         public override object Clone()
         {

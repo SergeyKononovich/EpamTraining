@@ -22,6 +22,16 @@ namespace Task1_TaxiStation
             _cars = cars.Clone() as IExtendedCollection<ICar>;
         }
 
+        public override string ToString()
+        {
+            string str = "TaxiStation:\n";
+
+            str += "--Cars:\n";
+            foreach (var car in _cars)
+                str += car;
+
+            return str;
+        }
         public bool TryAddCar(ICar car)
         {
             if (car == null)
@@ -48,6 +58,10 @@ namespace Task1_TaxiStation
         {
             var sorted = _cars.OrderBy(keySelector, comparer).ToArray();
             _cars.InitWith(sorted);
+        }
+        public ICar FirstCarOrDefault(Func<ICar, bool> predicate)
+        {
+            return _cars.FirstOrDefault(predicate);
         }
     }
 }

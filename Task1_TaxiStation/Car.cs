@@ -52,10 +52,9 @@ namespace Task1_TaxiStation
 
         public override string ToString()
         {
-            return $"Car: {Brand} {Model} {ReleaseDate.Year}\n" +
-                   $"Registration number: {RegistrationNumber}\n" +
-                   Specifications +
-                   "------------------------------------------------------";
+            return $"----Car: {Brand} {Model} {ReleaseDate.Year}\n" +
+                   $"----Registration number: {RegistrationNumber}\n" +
+                   Specifications + "\n";
         }
         public override int GetHashCode()
         {

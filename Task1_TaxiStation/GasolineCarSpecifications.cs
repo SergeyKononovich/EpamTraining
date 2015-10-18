@@ -44,8 +44,8 @@ namespace Task1_TaxiStation
         public override string ToString()
         {
             return base.ToString() +
-                   $"-Engine capacity: {EngineCapacityL}\n" +
-                   $"-Fuel consumption (L/100km): {FuelConsumptionLP100Km}\n";
+                   $"------Engine capacity: {EngineCapacityL}\n" +
+                   $"------Fuel consumption (L/100km): {FuelConsumptionLP100Km}\n";
         }
         public override object Clone()
         {

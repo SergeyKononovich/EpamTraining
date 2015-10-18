@@ -18,11 +18,11 @@
 
         public override string ToString()
         {
-            return "Car specifications:\n" +
-                   $"-Engine type: {EngineType}\n" +
-                   $"-Max speed (KPH): {MaxSpeedKPH}\n" +
-                   $"-Number of seats: {NumberOfSeats}\n" +
-                   $"-Average cost of kilometer (BYB): {AverageCostOfKilometerBYB}\n";
+            return "----Car specifications:\n" +
+                   $"------Engine type: {EngineType}\n" +
+                   $"------Max speed (KPH): {MaxSpeedKPH}\n" +
+                   $"------Number of seats: {NumberOfSeats}\n" +
+                   $"------Average cost of kilometer (BYB): {AverageCostOfKilometerBYB}\n";
         }
         public abstract object Clone();
     }
