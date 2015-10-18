@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task1_TaxiStation
+﻿namespace Task1_TaxiStation
 {
     public abstract class CarSpecificationsBase : ICarSpecifications
     {
