@@ -18,14 +18,13 @@ namespace Task1_TaxiStation
             get { return _cars.Clone() as IExtendedCollection<ICar>; }
         }
 
-
-        // TODO Dependency Injection with Unity
+        
         public TaxiStation(IExtendedCollection<ICar> cars)
         {
             if (cars == null)
                 throw new ArgumentNullException(nameof(cars));
 
-            _cars = cars;
+            _cars = cars.Clone() as IExtendedCollection<ICar>;
         }
 
         public bool TryAddCar(ICar car)
@@ -33,7 +32,7 @@ namespace Task1_TaxiStation
             if (car == null)
                 throw new ArgumentNullException(nameof(car));
 
-            if (_cars.First(x => ReferenceEquals(x, car)) == null)
+            if (_cars.FirstOrDefault(x => ReferenceEquals(x, car)) == null)
             {
                 _cars.Add(car);
                 return true;
@@ -45,15 +44,14 @@ namespace Task1_TaxiStation
         {
             return _cars.Remove(car);
         }
-        // TODO Implement safe iterator
         public void SortCars<TKey>(Func<ICar, TKey> keySelector)
         {
-            var sorted = _cars.OrderBy(keySelector);
+            var sorted = _cars.OrderBy(keySelector).ToArray();
             _cars.InitWith(sorted);
         }
         public void SortCars<TKey>(Func<ICar, TKey> keySelector, IComparer<TKey> comparer)
         {
-            var sorted = _cars.OrderBy(keySelector, comparer);
+            var sorted = _cars.OrderBy(keySelector, comparer).ToArray();
             _cars.InitWith(sorted);
         }
     }

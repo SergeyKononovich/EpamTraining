@@ -14,12 +14,22 @@ namespace Task1_TaxiStation
         public int AverageCostOfKilometerBYB { get; set; }
 
 
+        protected CarSpecificationsBase() { }
+        protected CarSpecificationsBase(ICarSpecifications other)
+        {
+            MaxSpeedKPH = other.MaxSpeedKPH;
+            NumberOfSeats = other.NumberOfSeats;
+            AverageCostOfKilometerBYB = other.AverageCostOfKilometerBYB;
+        }
+
         public override string ToString()
         {
-            return $"Engine type: {EngineType}\n" +
-                   $"Max speed (KPH): {MaxSpeedKPH}\n" +
-                   $"Number of seats: {NumberOfSeats}\n" +
-                   $"Average cost of kilometer (BYB): {AverageCostOfKilometerBYB}\n";
+            return "Car specifications:\n" +
+                   $"-Engine type: {EngineType}\n" +
+                   $"-Max speed (KPH): {MaxSpeedKPH}\n" +
+                   $"-Number of seats: {NumberOfSeats}\n" +
+                   $"-Average cost of kilometer (BYB): {AverageCostOfKilometerBYB}\n";
         }
+        public abstract object Clone();
     }
 }

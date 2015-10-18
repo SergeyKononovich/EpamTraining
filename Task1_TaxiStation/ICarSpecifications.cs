@@ -14,7 +14,7 @@ namespace Task1_TaxiStation
         Gas
     }
 
-    public interface ICarSpecifications
+    public interface ICarSpecifications : ICloneable
     {
         EngineType EngineType { get; }
         int MaxSpeedKPH { get; set; }

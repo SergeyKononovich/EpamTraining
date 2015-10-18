@@ -18,7 +18,7 @@ namespace Task1_TaxiStation
             set
             {
                 if (value < 0.1)
-                    throw new ArgumentOutOfRangeException(nameof(EngineCapacity), value, "Should be > 0.1");
+                    throw new ArgumentOutOfRangeException(nameof(EngineCapacityL), value, "Should be > 0.1");
 
                 _engineCapacity = value;
             }
@@ -29,18 +29,31 @@ namespace Task1_TaxiStation
             set
             {
                 if (value < 0.1)
-                    throw new ArgumentOutOfRangeException(nameof(EngineCapacity), value, "Should be > 0.1");
+                    throw new ArgumentOutOfRangeException(nameof(EngineCapacityL), value, "Should be > 0.1");
 
                 _fuelConsumptionLp100Km = value;
             }
         }
 
 
+        public GasolineCarSpecifications() 
+            : base() { }
+        private GasolineCarSpecifications(GasolineCarSpecifications other)
+            : base(other)
+        {
+            _engineCapacity = other._engineCapacity;
+            _fuelConsumptionLp100Km = other._fuelConsumptionLp100Km;
+        }
+
         public override string ToString()
         {
             return base.ToString() +
-                   $"Engine capacity: {EngineCapacityL}\n" +
-                   $"Fuel consumption (L/100km): {FuelConsumptionLP100Km}\n";
+                   $"-Engine capacity: {EngineCapacityL}\n" +
+                   $"-Fuel consumption (L/100km): {FuelConsumptionLP100Km}\n";
+        }
+        public override object Clone()
+        {
+            return new GasolineCarSpecifications(this);
         }
     }
 }

@@ -8,10 +8,22 @@ namespace Task1_TaxiStation
         public TimeSpan FullChargingTime { get; set; }
 
 
+        public ElectricCarSpecifications() 
+            : base() { }
+        private ElectricCarSpecifications(ElectricCarSpecifications other)
+            : base(other)
+        {
+            FullChargingTime = other.FullChargingTime;
+        }
+
         public override string ToString()
         {
             return base.ToString() +
-                   $"Full charging time (h): {FullChargingTime.Hours}\n";
+                   $"-Full charging time (h): {FullChargingTime.Hours}\n";
+        }
+        public override object Clone()
+        {
+            return new ElectricCarSpecifications(this);
         }
     }
 }

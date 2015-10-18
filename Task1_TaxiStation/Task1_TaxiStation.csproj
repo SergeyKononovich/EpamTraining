@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CarBase.cs" />
+    <Compile Include="Car.cs" />
+    <Compile Include="CarsList.cs" />
     <Compile Include="CarSpecificationsBase.cs" />
     <Compile Include="ElectricCarSpecifications.cs" />
     <Compile Include="GasolineCarSpecifications.cs" />
