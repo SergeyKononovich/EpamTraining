@@ -32,17 +32,24 @@ namespace Task1_TaxiStation
             WriteLine("\nAfter adding removed cars:\n");
             WriteLine(myTaxiStation);
 
-            WriteLine("\nSearch car with speed in the range:\n");
-            WriteLine("Enter min speed: ");
-            string temp = ReadLine() ?? "0";
-            int min = int.Parse(temp);
-            WriteLine("Enter max speed: ");
-            temp = ReadLine() ?? "100";
-            int max = int.Parse(temp);
-            WriteLine($"First car with speed in the range [{min}, {max}]:");
-            ICar car = myTaxiStation.FirstCarOrDefault(TaxiStationHelper.SpeedBetweenPredicate(min, max));
-            string ans = car?.ToString() ?? "Not found\n";
-            WriteLine(ans);
+            try
+            {
+                WriteLine("\nSearch car with speed in the range:\n");
+                WriteLine("Enter min speed: ");
+                string temp = ReadLine() ?? "0";
+                int min = int.Parse(temp);
+                WriteLine("Enter max speed: ");
+                temp = ReadLine() ?? "100";
+                int max = int.Parse(temp);
+                WriteLine($"First car with speed in the range [{min}, {max}]:");
+                ICar car = myTaxiStation.FirstCarOrDefault(TaxiStationHelper.SpeedBetweenPredicate(min, max));
+                string ans = car?.ToString() ?? "Not found\n";
+                WriteLine(ans);
+            }
+            catch (FormatException e)
+            {
+                WriteLine(e.Message);
+            }
 
             ReadKey();
         }
