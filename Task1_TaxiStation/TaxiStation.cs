@@ -17,7 +17,7 @@ namespace Task1_TaxiStation
         public TaxiStation(IExtendedCollection<ICar> cars)
         {
             if (cars == null)
-                throw new ArgumentNullException(nameof(cars));
+                throw  new ArgumentNullException(nameof(cars));
 
             _cars = cars.Clone() as IExtendedCollection<ICar>;
         }
@@ -34,10 +34,7 @@ namespace Task1_TaxiStation
         }
         public bool TryAddCar(ICar car)
         {
-            if (car == null)
-                throw new ArgumentNullException(nameof(car));
-
-            if (_cars.FirstOrDefault(x => ReferenceEquals(x, car)) == null)
+            if (car != null && _cars.FirstOrDefault(x => ReferenceEquals(x, car)) == null)
             {
                 _cars.Add(car);
                 return true;
@@ -51,16 +48,25 @@ namespace Task1_TaxiStation
         }
         public void SortCars<TKey>(Func<ICar, TKey> keySelector)
         {
+            if (keySelector == null)
+                throw new ArgumentNullException(nameof(keySelector));
+
             var sorted = _cars.OrderBy(keySelector).ToArray();
             _cars.InitWith(sorted);
         }
         public void SortCars<TKey>(Func<ICar, TKey> keySelector, IComparer<TKey> comparer)
         {
+            if (keySelector == null)
+                throw new ArgumentNullException(nameof(keySelector));
+
             var sorted = _cars.OrderBy(keySelector, comparer).ToArray();
             _cars.InitWith(sorted);
         }
         public ICar FirstCarOrDefault(Func<ICar, bool> predicate)
         {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
             return _cars.FirstOrDefault(predicate);
         }
     }
