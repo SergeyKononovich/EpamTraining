@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Task1_TaxiStation
+namespace Task1_TaxiStation.Collections
 {
     static class GenericCollectionsExtensionMethods
     {

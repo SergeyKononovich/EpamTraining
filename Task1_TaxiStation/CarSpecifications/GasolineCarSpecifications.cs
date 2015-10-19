@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task1_TaxiStation
+namespace Task1_TaxiStation.CarSpecifications
 {
     public class GasolineCarSpecifications : CarSpecificationsBase
     {
@@ -44,8 +44,8 @@ namespace Task1_TaxiStation
         public override string ToString()
         {
             return base.ToString() +
-                   $"------Engine capacity: {EngineCapacityL}\n" +
-                   $"------Fuel consumption (L/100km): {FuelConsumptionLP100Km}\n";
+                   $"------Engine capacity: {EngineCapacityL} L\n" +
+                   $"------Fuel consumption: {FuelConsumptionLP100Km} L/100km\n";
         }
         public override object Clone()
         {

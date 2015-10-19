@@ -1,4 +1,5 @@
 ﻿using System;
+using Task1_TaxiStation.CarSpecifications;
 
 namespace Task1_TaxiStation
 {
@@ -21,6 +22,7 @@ namespace Task1_TaxiStation
                 _registrationNumber = value;
             }
         }
+        public long PriceBYB { get; set; } = 0;
         public ICarSpecifications Specifications
         {
             get { return _specifications; }
@@ -54,6 +56,7 @@ namespace Task1_TaxiStation
         {
             return $"----Car: {Brand} {Model} {ReleaseDate.Year}\n" +
                    $"----Registration number: {RegistrationNumber}\n" +
+                   $"----Price: {PriceBYB} BYB\n" +
                    Specifications + "\n";
         }
         public override int GetHashCode()

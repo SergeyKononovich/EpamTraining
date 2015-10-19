@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task1_TaxiStation
+namespace Task1_TaxiStation.CarSpecifications
 {
     public class ElectricCarSpecifications : CarSpecificationsBase
     {
@@ -19,7 +19,7 @@ namespace Task1_TaxiStation
         public override string ToString()
         {
             return base.ToString() +
-                   $"------Full charging time (h): {FullChargingTime.Hours}\n";
+                   $"------Full charging time: {FullChargingTime.Hours} hours\n";
         }
         public override object Clone()
         {

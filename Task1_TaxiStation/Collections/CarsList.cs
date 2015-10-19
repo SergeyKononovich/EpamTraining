@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Task1_TaxiStation
+namespace Task1_TaxiStation.Collections
 {
     public class ExtendedList<T> : List<T>, IExtendedCollection<T>
     {

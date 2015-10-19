@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Task1_TaxiStation.Collections;
 
 namespace Task1_TaxiStation
 {
     public class TaxiStation
     {
         private readonly IExtendedCollection<ICar> _cars;
+        private long _totalCarsCostCache;
+        private bool _isTotalCarsCostChanged = true;
 
         public IExtendedCollection<ICar> Cars
         {
@@ -37,6 +40,7 @@ namespace Task1_TaxiStation
             if (car != null && _cars.FirstOrDefault(x => ReferenceEquals(x, car)) == null)
             {
                 _cars.Add(car);
+                OnCarsChanged();
                 return true;
             }
 
@@ -44,7 +48,13 @@ namespace Task1_TaxiStation
         }
         public bool TryRemoveCar(ICar car)
         {
-            return _cars.Remove(car);
+            if (_cars.Remove(car))
+            {
+                OnCarsChanged();
+                return true;
+            }
+
+            return false;
         }
         public void SortCars<TKey>(Func<ICar, TKey> keySelector)
         {
@@ -68,6 +78,21 @@ namespace Task1_TaxiStation
                 throw new ArgumentNullException(nameof(predicate));
 
             return _cars.FirstOrDefault(predicate);
+        }
+        public long GetTotalCarsCost()
+        {
+            if (_isTotalCarsCostChanged)
+            {
+                _isTotalCarsCostChanged = false;
+                _totalCarsCostCache = _cars.Sum(car => car.PriceBYB);
+            }
+
+            return _totalCarsCostCache;
+        }
+
+        private void OnCarsChanged()
+        {
+            _isTotalCarsCostChanged = true;
         }
     }
 }

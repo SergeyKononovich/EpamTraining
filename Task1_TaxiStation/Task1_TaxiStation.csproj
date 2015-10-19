@@ -44,14 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Car.cs" />
-    <Compile Include="CarsList.cs" />
-    <Compile Include="CarSpecificationsBase.cs" />
-    <Compile Include="ElectricCarSpecifications.cs" />
-    <Compile Include="GasolineCarSpecifications.cs" />
-    <Compile Include="GenericCollectionsExtensionMethods.cs" />
+    <Compile Include="Collections\CarsList.cs" />
+    <Compile Include="CarSpecifications\CarSpecificationsBase.cs" />
+    <Compile Include="CarSpecifications\ElectricCarSpecifications.cs" />
+    <Compile Include="CarSpecifications\GasolineCarSpecifications.cs" />
+    <Compile Include="Collections\GenericCollectionsExtensionMethods.cs" />
     <Compile Include="ICar.cs" />
-    <Compile Include="ICarSpecifications.cs" />
-    <Compile Include="IExtendedCollection.cs" />
+    <Compile Include="CarSpecifications\ICarSpecifications.cs" />
+    <Compile Include="Collections\IExtendedCollection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiStation.cs" />

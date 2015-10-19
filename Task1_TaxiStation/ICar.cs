@@ -1,4 +1,5 @@
 ﻿using System;
+using Task1_TaxiStation.CarSpecifications;
 
 namespace Task1_TaxiStation
 {
@@ -8,6 +9,7 @@ namespace Task1_TaxiStation
         string Model { get; }
         DateTime ReleaseDate { get; }
         string RegistrationNumber { get; set; }
+        long PriceBYB { get; set; }
         ICarSpecifications Specifications { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task1_TaxiStation
+namespace Task1_TaxiStation.CarSpecifications
 {
     public enum EngineType
     {
@@ -13,7 +13,7 @@ namespace Task1_TaxiStation
     public interface ICarSpecifications : ICloneable
     {
         EngineType EngineType { get; }
-        int MaxSpeedKPH { get; set; }
+        int MaxSpeedKmPH { get; set; }
         int NumberOfSeats { get; set; }
         int AverageCostOfKilometerBYB { get; set; }
     }
