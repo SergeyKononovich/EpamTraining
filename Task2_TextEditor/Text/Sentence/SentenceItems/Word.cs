@@ -40,5 +40,9 @@ namespace Task2_TextEditor
         {
             return _symbols.GetEnumerator();
         }
+        public override string ToString()
+        {
+            return Chars;
+        }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Task2_TextEditor
 {
@@ -11,19 +13,15 @@ namespace Task2_TextEditor
     {
         static void Main(string[] args)
         {
-            string[] separators = {".", "!", "?", "(.){3}"};
-            string input = "First sentence!?     Second a. sentence!    Third sentence...  Yes 12.3.  ";
+            TextParser tp = new TextParser(TextSeparatorContainer.Default);
+            TextReader tr = new StreamReader(new FileStream(@"E:\Projects\EpamTraining\Task2_TextEditor\TextSample.txt", FileMode.Open));
+            Text text = tp.Parse(tr);
 
-            Array.Sort(separators, (x, y) => -x.Length.CompareTo(y.Length));
-            string pattern = separators.Aggregate("", (current, sep) => current + $"(?<=[{sep}]) | ");
-            pattern = pattern.Remove(pattern.Length - 3, 3);
-
-            Regex rgx = new Regex(@"(?<=[\.!\?]+)(?=[^\.!\?»\d])", RegexOptions.IgnoreCase);
-            string[] sentences = rgx.Split(input).Select(s => s.Trim()).Where(s => s != "").ToArray(); ;
-            foreach (var word in sentences)
-            {
-                Console.WriteLine(word);
-            }
+            Console.WriteLine(text.ToString());
+            //foreach (var sentence in text.Sentences)
+            //{
+            //    Console.WriteLine(sentence);
+            //}
 
             Console.ReadKey();
         }

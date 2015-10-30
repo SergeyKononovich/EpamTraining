@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TextSeparatorContainer.cs" />
     <Compile Include="Text\Sentence\ISentence.cs" />
     <Compile Include="Text\Sentence\SentenceItems\ISentenceItem.cs" />
     <Compile Include="TextParser.cs" />
@@ -51,12 +52,16 @@
     <Compile Include="Text\Sentence\SentenceItems\Punctuation.cs" />
     <Compile Include="Text\Sentence\Sentence.cs" />
     <Compile Include="Symbol.cs" />
+    <Compile Include="Text\Sentence\SentenceItems\Space.cs" />
     <Compile Include="Text\Text.cs" />
     <Compile Include="Text\Sentence\SentenceItems\Word.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextSample.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
