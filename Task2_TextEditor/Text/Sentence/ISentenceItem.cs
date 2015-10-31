@@ -3,5 +3,8 @@
     public interface ISentenceItem
     {
         string Chars { get; }
+        int CharsLength { get; }
+
+        string ToString();
     }
 }

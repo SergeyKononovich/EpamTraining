@@ -43,15 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TextSeparatorContainer.cs" />
-    <Compile Include="Text\Sentence\ISentence.cs" />
-    <Compile Include="Text\Sentence\SentenceItems\ISentenceItem.cs" />
-    <Compile Include="TextParser.cs" />
+    <Compile Include="SimpleTextParser\IPunctuationContainer.cs" />
+    <Compile Include="SimpleTextParser\PunctuationContainer.cs" />
+    <Compile Include="Text\ITextItems.cs" />
+    <Compile Include="Text\Sentence\ISentenceItem.cs" />
+    <Compile Include="SimpleTextParser\SimpleTextParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\Sentence\SentenceItems\Punctuation.cs" />
     <Compile Include="Text\Sentence\Sentence.cs" />
-    <Compile Include="Symbol.cs" />
     <Compile Include="Text\Sentence\SentenceItems\Space.cs" />
     <Compile Include="Text\Text.cs" />
     <Compile Include="Text\Sentence\SentenceItems\Word.cs" />

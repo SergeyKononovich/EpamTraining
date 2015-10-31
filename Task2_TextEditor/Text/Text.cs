@@ -1,40 +1,73 @@
 ﻿using System;
-using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Task2_TextEditor
 {
-    public class Text
+    public class Text : ICollection<ITextItem>
     {
-        public ICollection<ISentence> Sentences { get; }
+        private readonly ICollection<ITextItem> _sentences;
+
+        public int Count => SentenceCount;
+        public bool IsReadOnly => false;
+        public int SentenceCount => _sentences.Count;
+        public int CharsLength => ToString().Length;
+
 
         public Text()
         {
-            Sentences = new List<ISentence>();
+            _sentences = new List<ITextItem>();
         }
-        public Text(IEnumerable<ISentence> source)
+        public Text(IEnumerable<ITextItem> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            Sentences = source.ToList();
+            _sentences = source.ToList();
         }
 
+        public IEnumerator<ITextItem> GetEnumerator()
+        {
+            return _sentences.GetEnumerator();
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
         public override string ToString()
         {
-            return String.Join(" ", Sentences);
+            return String.Join(" ", _sentences);
         }
         public static Text operator+(Text l, Text r)
         {
-            var result = new Text();
+            if (l == null) throw new ArgumentNullException(nameof(l));
+            if (r == null) throw new ArgumentNullException(nameof(r));
 
-            foreach (var s in l.Sentences)
-                result.Sentences.Add(s);
+            return new Text(l._sentences.Concat(r._sentences));
+        }
+        public void Add(ITextItem item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
-            foreach (var s in r.Sentences)
-                result.Sentences.Add(s);
+            _sentences.Add(item);
+        }
+        public void Clear()
+        {
+            _sentences.Clear();
+        }
+        public bool Contains(ITextItem item)
+        {
+            return _sentences.Contains(item);
+        }
+        public void CopyTo(ITextItem[] array, int arrayIndex)
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
 
-            return result;
+            _sentences.CopyTo(array, arrayIndex);
+        }
+        public bool Remove(ITextItem item)
+        {
+            return _sentences.Remove(item);
         }
     }
 }

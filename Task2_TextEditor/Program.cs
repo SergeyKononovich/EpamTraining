@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml;
+using System.Security.Cryptography;
 
 namespace Task2_TextEditor
 {
@@ -13,15 +9,35 @@ namespace Task2_TextEditor
     {
         static void Main(string[] args)
         {
-            TextParser tp = new TextParser(TextSeparatorContainer.Default);
-            TextReader tr = new StreamReader(new FileStream(@"E:\Projects\EpamTraining\Task2_TextEditor\TextSample.txt", FileMode.Open));
-            Text text = tp.Parse(tr);
+            const string filename = @"E:\Projects\EpamTraining\Task2_TextEditor\TextSample.txt";
 
-            Console.WriteLine(text.ToString());
-            //foreach (var sentence in text.Sentences)
-            //{
-            //    Console.WriteLine(sentence);
-            //}
+            try
+            {
+                using (TextReader tr = new StreamReader(new FileStream(filename, FileMode.Open)))
+                {
+                    SimpleTextParser tp = new SimpleTextParser(PunctuationContainer.Default);
+                    Text text = tp.Parse(tr);
+
+                    // Sample 1
+                    /*Вывести все предложения заданного текста в порядке возрастания количества слов в 
+                    каждом из них.*/
+                    var result = from sentence in text.OfType<Sentence>()
+                                 let wordsCount = (from sentenceItem in sentence
+                                                   where sentenceItem is Word
+                                                   select sentenceItem).Count()
+                                 orderby wordsCount
+                                 select sentence;
+
+                    foreach (var sentence in result)
+                    {
+                        Console.WriteLine(sentence);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             Console.ReadKey();
         }

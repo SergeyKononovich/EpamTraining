@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task2_TextEditor
+﻿namespace Task2_TextEditor
 {
     public class Space : ISentenceItem
     {
-        public Symbol Value { get; } = new Symbol(" ");
-        public string Chars => Value.Chars;
+        private const string SpaceChar = " ";
+
+        public string Chars => SpaceChar;
+        public int CharsLength => Chars.Length;
+
 
         public override string ToString()
         {

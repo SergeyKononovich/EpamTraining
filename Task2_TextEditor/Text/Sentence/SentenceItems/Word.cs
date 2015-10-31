@@ -1,45 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 
 namespace Task2_TextEditor
 {
-    public class Word : ISentenceItem, IEnumerable<Symbol>
+    public class Word : ISentenceItem
     {
-        //private string chars;
-
-        private readonly Symbol[] _symbols;
-        
-        public int Length => _symbols.Length;
-        public Symbol this[int index] => _symbols[index];
-        public string Chars
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder();
-                foreach (var s in _symbols)
-                {
-                    sb.Append(s.Chars);
-                }
-                return sb.ToString();
-            }
-        }
+        public string Chars { get; }
+        public int CharsLength => Chars.Length;
 
 
         public Word(string chars)
         {
-            _symbols = chars.Select(x => new Symbol(x)).ToArray();
+            if (chars == null) throw new ArgumentNullException(nameof(chars));
+            if (chars == String.Empty || chars.Contains(" "))
+                throw new FormatException("Chars must not contain spaces or be empty");
+
+            Chars = chars;
         }
 
-        public IEnumerator<Symbol> GetEnumerator()
-        {
-            return _symbols.AsEnumerable().GetEnumerator();
-        }
-        IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _symbols.GetEnumerator();
-        }
         public override string ToString()
         {
             return Chars;
