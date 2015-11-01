@@ -12,5 +12,25 @@
         {
             return Chars;
         }
+        public object Clone()
+        {
+            return this;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Space p = (Space)obj;
+            return Chars.Equals(p.Chars);
+        }
+        protected bool Equals(Word other)
+        {
+            return string.Equals(Chars, other.Chars);
+        }
+        public override int GetHashCode()
+        {
+            return 0;
+        }
     }
 }

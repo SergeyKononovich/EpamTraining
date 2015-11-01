@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharExtentions.cs" />
     <Compile Include="SimpleTextParser\IPunctuationContainer.cs" />
     <Compile Include="SimpleTextParser\PunctuationContainer.cs" />
     <Compile Include="Text\ITextItems.cs" />
@@ -61,7 +62,9 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TextSample.txt" />
+    <Content Include="TextSample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

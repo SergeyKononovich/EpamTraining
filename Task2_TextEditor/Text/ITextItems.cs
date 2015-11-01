@@ -1,6 +1,8 @@
-﻿namespace Task2_TextEditor
+﻿using System;
+
+namespace Task2_TextEditor
 {
-    public interface ITextItem
+    public interface ITextItem : ICloneable
     {
         int CharsLength { get; }
 

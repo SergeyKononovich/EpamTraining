@@ -1,5 +1,13 @@
-﻿Сейчас регулярные выражения используются многими текстовыми редакторами и утилитами для поиска и изменения текста
-на основе выбранных правил. Многие языки программирования уже поддерживают регулярные выражения для работы со
-строками. Например, Perl и Tcl имеют встроенный в их синтаксис механизм обработки регулярных выражений. Набор
-утилит (включая редактор sed и фильтр grep), поставляемых в дистрибутивах Unix, одним из первых способствовал
-популяризации понятия регулярных выражений.
+﻿What is Ray Tracing? What, what, what? Ray tracing is a technique for rendering three-dimensional 
+graphics with very complex light interactions! This means you can create pictures 
+full of mirrors, transparent surfaces, and shadows, with stunning results. We discuss 
+ray tracing in this introductory graphics article because it is a very simple method to 
+both understand and implement. So the color of each point on real film is caused 
+by a light ray (actually, a group of rays) that passes through the aperture and 
+hits the film, while in computer graphics each pixel of the final image is caused 
+by a simulated light ray that hits the view window on its path towards the eye. 
+The results, however, are the same. We subdivide the view window into small squares, 
+where each square corresponds to one pixel in the final image. If you want to create 
+an image at the resolution of 640x400, you would break up the view window into a 
+grid of 640 squares across and 400 square down. The real problem, then, is assigning 
+a color to each square. This is what ray tracing does. 

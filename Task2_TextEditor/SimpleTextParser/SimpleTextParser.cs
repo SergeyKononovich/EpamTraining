@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Task2_TextEditor
         private const int Bufferlength = 10000;
         private readonly Regex _textParserRegex;
         private readonly Regex _sentenceParserRegex;
+        private readonly Regex _expressionParserRegex;
         private readonly IPunctuationContainer _punctuationContainer;
 
         public IPunctuationContainer PunctuationContainer
@@ -40,8 +42,12 @@ namespace Task2_TextEditor
             orderedSep = PunctuationContainer.SyntacticConstructionsSeparators.OrderByDescending(x => x.Length);
             string sep3 = String.Join(@"|", orderedSep.Select(Regex.Escape).ToArray());
             string sep4 = String.Join(@"", orderedSep.Select(Regex.Escape).ToArray());
-            pattern = $"([^{sep4}\\s{sep2}]+|{sep1}|\\s|{sep3})";
+            pattern = $"(([^{sep4}{sep2}\\s]*[{sep2}]*[^{sep4}{sep2}\\s]+)|\\s+|{sep3}|{sep1})";
             _sentenceParserRegex = new Regex(pattern);
+
+            // set _expressionParserRegex
+            pattern = $"(([^{sep4}{sep2}\\s]*[{sep2}]*[^{sep4}{sep2}\\s]+)|\\s+|{sep3}|{sep1})";
+            _expressionParserRegex = new Regex(pattern);
         }
 
         public virtual Text Parse(TextReader reader)
@@ -64,8 +70,7 @@ namespace Task2_TextEditor
 
             return textResult;
         }
-
-        protected virtual Text ParseText(string text, out int endIndex)
+        public virtual Text ParseText(string text, out int endIndex)
         {
             text = TrimSpaces(text);
             Text result = new Text();
@@ -88,22 +93,29 @@ namespace Task2_TextEditor
 
             return result;
         }
-        protected virtual ITextItem ParseTextItem(string sentence)
+        public virtual ITextItem ParseTextItem(string sentence)
         {
             var result = new Sentence();
 
             var matches = _sentenceParserRegex.Matches(sentence);
             foreach (Match match in matches)
-                result.Add(GetSentenceItemFromString(match.Value));
+                result.Add(ParseSentenceItem(match.Value));
 
             return result;
         }
-        protected virtual ISentenceItem GetSentenceItemFromString(string str)
+        public virtual IEnumerable<ISentenceItem> ParseExpression(string expression)
+        {
+            var matches = _expressionParserRegex.Matches(expression);
+
+            return (from Match match in matches
+                    select ParseSentenceItem(match.Value)).ToList();
+        }
+        public virtual ISentenceItem ParseSentenceItem(string str)
         {
             var common = PunctuationContainer.SyntacticConstructionsSeparators
                 .Intersect(PunctuationContainer.SentencesSeparators);
 
-            if (str == " ")
+            if (str.Trim() == String.Empty && str != String.Empty)
                 return new Space();
             else if (common.Contains(str))
                 return new Punctuation(str, true, true);
