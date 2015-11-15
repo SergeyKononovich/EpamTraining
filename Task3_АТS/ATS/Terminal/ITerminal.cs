@@ -27,7 +27,8 @@ namespace Task3_АТS.ATS.Terminal
         event EventHandler<ConnectRequest> ConnectingEvent;
         event EventHandler<ConnectResponse> ConnectSucceededEvent;
         event EventHandler<ConnectResponse> ConnectFailedEvent;
-        event EventHandler DisconnectEvent;
+        event EventHandler<DropedResponse> DropedEvent;
+        event EventHandler<PhoneNumber> DisconnectEvent;
         event EventHandler<IRequest> SendRequestEvent;
         event EventHandler<IResponse> SendResponseEvent;
 

@@ -24,7 +24,8 @@ namespace Task3_АТS.Test
 
         private void StartLog()
         {
-            
+            TerminalToPortMapedEvent += (sender, terminal, port) =>
+            { Console.WriteLine($"{this} : {terminal} maped to {port}"); };
         }
     }
 }

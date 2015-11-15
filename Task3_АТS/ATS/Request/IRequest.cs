@@ -3,5 +3,6 @@
     public interface IRequest
     {
         int Code { get; }
+        PhoneNumber Sender { get; }
     }
 }

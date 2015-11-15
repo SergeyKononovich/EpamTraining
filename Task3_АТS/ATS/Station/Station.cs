@@ -24,13 +24,15 @@ namespace Task3_АТS.ATS.Station
             }
         }
 
-
+        
         private readonly ICollection<ITerminal> _terminals;
         private readonly ICollection<IPort> _ports;
+        private readonly IDictionary<SourseTargetPair, CallInfo> _activeConnections;
         private readonly IDictionary<SourseTargetPair, CallInfo> _activeCalls;
         private readonly IDictionary<PhoneNumber, IPort> _portMapping;
 
 
+        public event TerminalPortHandler TerminalToPortMapedEvent;
         public event EventHandler<CallInfo> ConnectionFailedEvent;
         public event EventHandler<CallInfo> CallStartEvent;
         public event EventHandler<CallInfo> CallEndEvent;
@@ -53,6 +55,7 @@ namespace Task3_АТS.ATS.Station
         {
             _terminals = new List<ITerminal>();
             _ports = new List<IPort>();
+            _activeConnections = new Dictionary<SourseTargetPair, CallInfo>();
             _activeCalls =new Dictionary<SourseTargetPair, CallInfo>();
             _portMapping = new Dictionary<PhoneNumber, IPort>();
         }
@@ -96,7 +99,7 @@ namespace Task3_АТS.ATS.Station
         }
         public override string ToString()
         {
-            return $"Station: {base.ToString()}";
+            return $"Station[{base.ToString()}]";
         }
 
         protected virtual void RegisterTerminal(ITerminal terminal)
@@ -107,6 +110,7 @@ namespace Task3_АТS.ATS.Station
             terminal.ConnectingEvent += TerminalOnConnectingEvent;
             terminal.ConnectSucceededEvent += TerminalOnConnectSucceededEvent;
             terminal.ConnectFailedEvent += TerminalOnConnectFailedEvent;
+            terminal.DropedEvent += TerminalOnDropedEvent;
             terminal.DisconnectEvent += TerminalOnDisconnectEvent;
         }
         protected virtual void RegisterPort(IPort port)
@@ -114,16 +118,11 @@ namespace Task3_АТS.ATS.Station
         }
         protected virtual void MapTerminalToPort(ITerminal terminal, IPort port)
         {
-            port.Open();
-            terminal.Plug();
-
             port.RegisterTerminal(terminal);
             terminal.RegisterPort(port);
-
-            port.Close();
-            terminal.Unplug();
-
+            
             _portMapping.Add(terminal.PhoneNumber, port);
+            OnTerminalToPortMapedEvent(terminal, port);
         }
         protected IPort GetPortByPhoneNumber(PhoneNumber phoneNumber)
         {
@@ -132,16 +131,30 @@ namespace Task3_АТS.ATS.Station
 
             return port;
         }
+        protected CallInfo GetConnectionByActor(PhoneNumber actor)
+        {
+            return _activeConnections.FirstOrDefault(p => p.Key.SourceNumber == actor ||
+                                                     p.Key.TargetNumber == actor).Value;
+
+        }
         protected CallInfo GetCallByActor(PhoneNumber actor)
         {
             return _activeCalls.FirstOrDefault(p => p.Key.SourceNumber == actor || 
                                                p.Key.TargetNumber == actor).Value;
 
         }
+        protected CallInfo RemoveActiveConnectionByActor(PhoneNumber actor)
+        {
+            CallInfo call = GetConnectionByActor(actor);
+            if (call != null && _activeConnections.Remove(new SourseTargetPair(call.Source, call.Target)))
+                return call;
+
+            return null;
+        }
         protected CallInfo RemoveActiveCallByActor(PhoneNumber actor)
         {
             CallInfo call = GetCallByActor(actor);
-            if (_activeCalls.Remove(new SourseTargetPair(call.Source, call.Target)))
+            if (call != null && _activeCalls.Remove(new SourseTargetPair(call.Source, call.Target)))
                 return call;
 
             return null;
@@ -151,25 +164,29 @@ namespace Task3_АТS.ATS.Station
             IPort sourcePort = GetPortByPhoneNumber(call.Source);
             IPort targetPort = GetPortByPhoneNumber(call.Target);
 
-            if (sourcePort != null && sourcePort.State == PortState.Listened &&
-                targetPort != null && targetPort.State == PortState.Listened)
+            if (sourcePort != null && sourcePort.IsPortBinded &&
+                targetPort != null && targetPort.IsPortBinded)
             {
                 sourcePort.UnbindPort(targetPort);
                 targetPort.UnbindPort(sourcePort);
             }
         }
 
+        private void OnTerminalToPortMapedEvent(ITerminal terminal, IPort port)
+        {
+            TerminalToPortMapedEvent?.Invoke(MACAddress, terminal, port);
+        }
         private void OnConnectionFailedEvent(CallInfo e)
         {
-            ConnectionFailedEvent?.Invoke(this, e);
+            ConnectionFailedEvent?.Invoke(MACAddress, e);
         }
         private void OnCallStartEvent(CallInfo e)
         {
-            CallStartEvent?.Invoke(this, e);
+            CallStartEvent?.Invoke(MACAddress, e);
         }
         private void OnCallEndEvent(CallInfo e)
         {
-            CallEndEvent?.Invoke(this, e);
+            CallEndEvent?.Invoke(MACAddress, e);
         }
 
         private void TerminalOnConnectingEvent(object sender, ConnectRequest connectRequest)
@@ -186,50 +203,67 @@ namespace Task3_АТS.ATS.Station
                 sourcePort.BindPort(targetPort);
                 targetPort.BindPort(sourcePort);
             }
+
+            CallInfo call = new CallInfo
+            {
+                Source = connectRequest.Sender,
+                Target = connectRequest.Target,
+                Started = DateTime.Now
+            };
+            _activeConnections.Add(new SourseTargetPair(connectRequest.Sender, connectRequest.Target), call);
         }
         private void TerminalOnConnectSucceededEvent(object sender, ConnectResponse connectResponse)
         {
             if (connectResponse == null) throw new ArgumentNullException(nameof(connectResponse));
 
 
-            CallInfo call = new CallInfo
+            CallInfo call = RemoveActiveConnectionByActor(connectResponse.ConnectRequest.Sender);
+            if (call != null)
             {
-                Source = connectResponse.ConnectRequest.Sender,
-                Target = connectResponse.ConnectRequest.Target,
-                Started = DateTime.Now
-            };
-
-            _activeCalls.Add(new SourseTargetPair(call.Source, call.Target), call);
-            OnCallStartEvent(call);
+                _activeCalls.Add(new SourseTargetPair(call.Source, call.Target), call);
+                OnCallStartEvent(call);
+            }
         }
         private void TerminalOnConnectFailedEvent(object sender, ConnectResponse connectResponse)
         {
             if (connectResponse == null) throw new ArgumentNullException(nameof(connectResponse));
 
 
-            CallInfo call = new CallInfo
+            CallInfo call = RemoveActiveConnectionByActor(connectResponse.ConnectRequest.Sender);
+            if (call != null)
             {
-                Source = connectResponse.ConnectRequest.Sender,
-                Target = connectResponse.ConnectRequest.Target,
-                Started = DateTime.Now,
-                Duration = null
-            };
-            
-            OnConnectionFailedEvent(call);
+                OnConnectionFailedEvent(call);
+                UnbindPortsByCall(call);
+            }
         }
-        private void TerminalOnDisconnectEvent(object sender, EventArgs eventArgs)
+        private void TerminalOnDropedEvent(object sender, DropedResponse dropedResponse)
         {
-            ITerminal terminal = sender as ITerminal;
-
-            if (terminal != null)
+            CallInfo call = RemoveActiveConnectionByActor(dropedResponse.Request.Sender);
+            if (call != null)
             {
-                CallInfo call = RemoveActiveCallByActor(terminal.PhoneNumber);
+                OnConnectionFailedEvent(call);
+                UnbindPortsByCall(call);
+                return;
+            }
 
-                if (call != null)
-                {
-                    UnbindPortsByCall(call);
-                    OnCallEndEvent(call);
-                }
+            call = RemoveActiveCallByActor(dropedResponse.Request.Sender);
+            if (call != null)
+            {
+                Random r = new Random();
+                call.Duration = TimeSpan.FromSeconds(r.Next(0, 600));
+                OnCallEndEvent(call);
+                UnbindPortsByCall(call);
+            }
+        }
+        private void TerminalOnDisconnectEvent(object sender, PhoneNumber phoneNumber)
+        {
+            CallInfo call = RemoveActiveCallByActor(phoneNumber);
+            if (call != null)
+            {
+                Random r = new Random();
+                call.Duration = TimeSpan.FromSeconds(r.Next(0, 600));
+                OnCallEndEvent(call);
+                UnbindPortsByCall(call);
             }
         }
     }

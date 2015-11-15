@@ -7,6 +7,7 @@ namespace Task3_АТS.ATS.Station
 {
     public interface IStation : INetworkEntity
     {
+        event TerminalPortHandler TerminalToPortMapedEvent;
         event EventHandler<CallInfo> ConnectionFailedEvent;
         event EventHandler<CallInfo> CallStartEvent;
         event EventHandler<CallInfo> CallEndEvent;

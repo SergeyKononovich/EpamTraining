@@ -7,7 +7,7 @@ using Task3_АТS.ATS.Response;
 
 namespace Task3_АТS.ATS.Terminal
 {
-    public abstract class TerminalBase : NetworkEntityBase, ITerminal
+    public class Terminal : NetworkEntityBase, ITerminal
     {
         private TerminalState _state = TerminalState.Unplagged;
         private string _registeredPortMAC;
@@ -39,12 +39,13 @@ namespace Task3_АТS.ATS.Terminal
         public event EventHandler<ConnectRequest> ConnectingEvent;
         public event EventHandler<ConnectResponse> ConnectSucceededEvent;
         public event EventHandler<ConnectResponse> ConnectFailedEvent;
-        public event EventHandler DisconnectEvent;
+        public event EventHandler<DropedResponse> DropedEvent;
+        public event EventHandler<PhoneNumber> DisconnectEvent;
         public event EventHandler<IRequest> SendRequestEvent;
         public event EventHandler<IResponse> SendResponseEvent;
 
 
-        protected TerminalBase(string macAddress, PhoneNumber phoneNumber)
+        protected Terminal(string macAddress, PhoneNumber phoneNumber)
             : base(macAddress)
         {
             PhoneNumber = phoneNumber;
@@ -54,8 +55,6 @@ namespace Task3_АТS.ATS.Terminal
         public virtual void RegisterPort(IPort port)
         {
             if (port == null) throw new ArgumentNullException(nameof(port));
-            if (State == TerminalState.Unplagged)
-                throw new StateException($"{this} unplagged");
             if (IsPortRegistered)
                 throw new RegistrationException($"{this} already have registered port");
 
@@ -72,8 +71,6 @@ namespace Task3_АТS.ATS.Terminal
         public virtual void RemovePort(IPort port)
         {
             if (port == null) throw new ArgumentNullException(nameof(port));
-            if (State == TerminalState.Unplagged)
-                throw new StateException($"{this} unplagged");
             if (port.MACAddress != _registeredPortMAC)
                 throw new RegistrationException($"{this} did'n register {port}");
 
@@ -83,19 +80,24 @@ namespace Task3_АТS.ATS.Terminal
             port.StateChangedEvent -= PortOnStateChangedEvent;
             port.ProcessRequestEvent -= ProcessRequest;
             port.ProcessResponseEvent -= ProcessResponse;
+            port.UnbindPortEvent -= PortOnUnbindPortEvent;
             _registeredPortMAC = null;
             IsRegisteredPortNotClosed = false;
-            State = TerminalState.Offline;
 
+            if (State != TerminalState.Unplagged)
+                State = TerminalState.Offline;
             OnRemovePort(port);
         }
         public void Plug()
         {
+            if (State != TerminalState.Unplagged) return;
+
             State = TerminalState.Offline;
         }
         public void Unplug()
         {
-            Disconnect();
+            if (State == TerminalState.Unplagged) return;
+            
             State = TerminalState.Unplagged;
         }
         public void Connect(PhoneNumber phoneNumber)
@@ -129,17 +131,19 @@ namespace Task3_АТS.ATS.Terminal
                 throw new StateException($"{this} unplagged");
 
 
+            if (State == TerminalState.Offline) return;
+
             if (!IsPortRegistered)
             {
                 var r = new DropedResponse(request, DropedResponse.PortNotRegistered);
-                ProcessResponse(this, r);
+                ProcessResponse(MACAddress, r);
                 return;
             }
 
             if (!IsRegisteredPortNotClosed)
             {
-                var r = new DropedResponse(request, DropedResponse.PortUnplagged);
-                ProcessResponse(this, r);
+                var r = new DropedResponse(request, DropedResponse.PortClose);
+                ProcessResponse(MACAddress, r);
                 return;
             }
 
@@ -152,17 +156,19 @@ namespace Task3_АТS.ATS.Terminal
                 throw new StateException($"{this} unplagged");
 
 
+            if (State == TerminalState.Offline) return;
+
             if (!IsPortRegistered)
             {
                 var r = new DropedResponse(response.Request, DropedResponse.PortNotRegistered);
-                ProcessResponse(this, r);
+                ProcessResponse(MACAddress, r);
                 return;
             }
 
             if (!IsRegisteredPortNotClosed)
             {
-                var r = new DropedResponse(response.Request, DropedResponse.PortUnplagged);
-                ProcessResponse(this, r);
+                var r = new DropedResponse(response.Request, DropedResponse.PortClose);
+                ProcessResponse(MACAddress, r);
                 return;
             }
 
@@ -177,21 +183,20 @@ namespace Task3_АТS.ATS.Terminal
 
 
             var senderMac = sender as string;
-            if (senderMac == null || (senderMac != _registeredPortMAC && senderMac != MACAddress))
-                return;
+            if (senderMac == null || senderMac != _registeredPortMAC) return;
 
             if (request is ConnectRequest)
             {
                 if (State == TerminalState.Online)
                 {
                     var r = new ConnectResponse((ConnectRequest)request, ConnectResponse.TerminalBusy);
-                    SendResponse(r);
+                    OnSendResponseEvent(r);
                 }
                 else
                 {
                     State = TerminalState.Online;
                     var r = new ConnectResponse((ConnectRequest)request, ConnectResponse.TerminalOk);
-                    SendResponse(r);
+                    OnSendResponseEvent(r);
                 }
                 return;
             }
@@ -208,22 +213,31 @@ namespace Task3_АТS.ATS.Terminal
                 throw new StateException($"{this} unplagged");
 
 
+            if (State == TerminalState.Offline) return;
+
             var senderMac = sender as string;
             if (senderMac == null || (senderMac != _registeredPortMAC && senderMac != MACAddress))
                 return;
 
-            if (State == TerminalState.Offline) return;
-
             if (response is ConnectResponse)
             {
-                var r = (ConnectResponse) response;
                 if (response.Code == ConnectResponse.TerminalOk)
-                    OnConnectSucceededEvent(r);
+                    OnConnectSucceededEvent((ConnectResponse)response);
                 else
                 {
                     State = TerminalState.Offline;
-                    OnConnectFailedEvent(r);
+                    OnConnectFailedEvent((ConnectResponse)response);
                 }
+
+                return;
+            }
+
+            if (response is DropedResponse)
+            {
+                State = TerminalState.Offline;
+                OnDropedEvent((DropedResponse)response);
+
+                return;
             }
 
             ProcessResponseWhenConnect(response);
@@ -243,11 +257,13 @@ namespace Task3_АТS.ATS.Terminal
         }
         public override string ToString()
         {
-            return $"Terminal: {base.ToString()}";
+            return $"Terminal[{base.ToString()}]";
         }
 
-        protected abstract void ProcessRequestWhenConnect(IRequest request);
-        protected abstract void ProcessResponseWhenConnect(IResponse response);
+        protected virtual void ProcessRequestWhenConnect(IRequest request)
+        { }
+        protected virtual void ProcessResponseWhenConnect(IResponse response)
+        { }
 
         private void OnStateChangingEvent(TerminalState terminalState)
         {
@@ -277,9 +293,13 @@ namespace Task3_АТS.ATS.Terminal
         {
             ConnectFailedEvent?.Invoke(MACAddress, response);
         }
+        private void OnDropedEvent(DropedResponse e)
+        {
+            DropedEvent?.Invoke(this, e);
+        }
         private void OnDisconnectEvent()
         {
-            DisconnectEvent?.Invoke(MACAddress, EventArgs.Empty);
+            DisconnectEvent?.Invoke(MACAddress, PhoneNumber);
         }
         private void OnSendRequestEvent(IRequest request)
         {
@@ -293,15 +313,11 @@ namespace Task3_АТS.ATS.Terminal
         private void PortOnStateChangedEvent(object sender, PortState oldState, PortState newState)
         {
             IsRegisteredPortNotClosed = newState != PortState.Close;
-
-            if (IsRegisteredPortNotClosed == false && State != TerminalState.Unplagged)
-                Disconnect();
-
         }
         private void PortOnUnbindPortEvent(object sender, IPort port)
         {
             if (State != TerminalState.Unplagged)
-                Disconnect();
+                State = TerminalState.Offline;
         }
     }
 }

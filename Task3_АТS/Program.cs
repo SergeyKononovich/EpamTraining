@@ -36,9 +36,9 @@ namespace Task3_АТS
             t3.Plug();
 
             t1.Connect(t2.PhoneNumber);
-            t1.SendMessage("Hallo!");
-            t2.SendMessage("Hi.");
-            t1.Disconnect();
+            t1.Unplug();
+            t2.SendMessage("Hallo!");
+            t2.Disconnect();
 
             Console.ReadKey();
         }

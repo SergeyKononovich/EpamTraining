@@ -45,12 +45,14 @@
   <ItemGroup>
     <Compile Include="ATS\CallInfo.cs" />
     <Compile Include="ATS\Exceptions\RegistrationException.cs" />
-    <Compile Include="ATS\Helper.cs" />
+    <Compile Include="ATS\EventHandlers.cs" />
     <Compile Include="ATS\NetworkEntity\INetworkEntity.cs" />
     <Compile Include="ATS\NetworkEntity\NetworkEntityBase.cs" />
     <Compile Include="ATS\PhoneNumber.cs" />
     <Compile Include="ATS\Port\IPort.cs" />
-    <Compile Include="ATS\Port\PortBase.cs" />
+    <Compile Include="ATS\Port\Port.cs" />
+    <Compile Include="BillingSystem\BillingSystem.cs" />
+    <Compile Include="BillingSystem\IBillingSystem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ATS\Request\IRequest.cs" />
@@ -61,7 +63,7 @@
     <Compile Include="ATS\Station\IStation.cs" />
     <Compile Include="ATS\Station\Station.cs" />
     <Compile Include="ATS\Terminal\ITerminal.cs" />
-    <Compile Include="ATS\Terminal\TerminalBase.cs" />
+    <Compile Include="ATS\Terminal\Terminal.cs" />
     <Compile Include="ATS\Exceptions\StateException.cs" />
     <Compile Include="Test\MessageRequest.cs" />
     <Compile Include="Test\TestPort.cs" />

@@ -11,7 +11,7 @@ namespace Task3_АТS.ATS.Response
 
         public const int PortNotRegistered = 6345;
         public const int PortUnbind = 3332;
-        public const int PortUnplagged = 4254;
+        public const int PortClose = 4254;
 
         public const int TargetPortUnplagged = 8887;
 

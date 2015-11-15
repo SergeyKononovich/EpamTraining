@@ -7,7 +7,7 @@ using Task3_АТS.ATS.Terminal;
 
 namespace Task3_АТS.ATS.Port
 {
-    public abstract class PortBase : NetworkEntityBase, IPort
+    public class Port : NetworkEntityBase, IPort
     {
         private PortState _state = PortState.Close;
         private string _registeredTerminalMAC;
@@ -46,15 +46,13 @@ namespace Task3_АТS.ATS.Port
         public event EventHandler<IResponse> SendResponseEvent;
 
 
-        protected PortBase(string macAddress)
+        protected Port(string macAddress)
             : base(macAddress) { }
 
 
         public virtual void RegisterTerminal(ITerminal terminal)
         {
             if (terminal == null) throw new ArgumentNullException(nameof(terminal));
-            if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
             if (IsTerminalRegistered)
                 throw new RegistrationException($"{this} already have registered terminal");
 
@@ -70,8 +68,6 @@ namespace Task3_АТS.ATS.Port
         public virtual void RemoveTerminal(ITerminal terminal)
         {
             if (terminal == null) throw new ArgumentNullException(nameof(terminal));
-            if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
             if (terminal.MACAddress != _registeredTerminalMAC)
                 throw new RegistrationException($"{this} did'n register {terminal}");
 
@@ -87,8 +83,6 @@ namespace Task3_АТS.ATS.Port
         public virtual void BindPort(IPort port)
         {
             if (port == null) throw new ArgumentNullException(nameof(port));
-            if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
             if (IsPortBinded)
                 throw new RegistrationException($"{this} already binded");
 
@@ -99,15 +93,14 @@ namespace Task3_АТS.ATS.Port
             port.SendResponseEvent += ProcessResponse;
             _bindedPortMAC = port.MACAddress;
 
-            State = PortState.Listened;
+            if (State != PortState.Close)
+                State = PortState.Listened;
             OnBindPortEvent(port);
         }
         public virtual void UnbindPort(IPort port)
         {
             if (port == null) throw new ArgumentNullException(nameof(port));
-            if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
-            if (port.MACAddress != _registeredTerminalMAC)
+            if (port.MACAddress != _bindedPortMAC)
                 throw new RegistrationException($"{this} did'n bind to {port}");
 
 
@@ -117,15 +110,20 @@ namespace Task3_АТS.ATS.Port
             port.SendResponseEvent -= ProcessResponse;
             _bindedPortMAC = null;
 
-            State = PortState.Open;
+            if (State != PortState.Close)
+                State = PortState.Open;
             OnUnbindPortEvent(port);
         }
         public void Open()
         {
-            State = PortState.Open;
+            if (State != PortState.Close) return;
+
+            State = IsPortBinded ? PortState.Listened : PortState.Open;
         }
         public void Close()
         {
+            if (State == PortState.Close) return;
+
             State = PortState.Close;
         }
         public void SendRequest(object sender, IRequest request)
@@ -133,24 +131,25 @@ namespace Task3_АТS.ATS.Port
             if (sender == null) throw new ArgumentNullException(nameof(sender));
             if (request == null) throw new ArgumentNullException(nameof(request));
             if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
+                throw new StateException($"{this} closed");
 
+
+            if (State == PortState.Open) return;
 
             var senderMac = sender as string;
-            if (senderMac == null || (senderMac != _registeredTerminalMAC && senderMac != MACAddress))
-                return;
+            if (senderMac == null || senderMac != _registeredTerminalMAC) return;
 
             if (!IsPortBinded)
             {
                 var r = new DropedResponse(request, DropedResponse.PortUnbind);
-                ProcessResponse(this, r);
+                OnProcessResponseEvent(r);
                 return;
             }
 
             if (!IsBindedPortNotClosed)
             {
                 var r = new DropedResponse(request, DropedResponse.TargetPortUnplagged);
-                ProcessResponse(this, r);
+                OnProcessResponseEvent(r);
                 return;
             }
 
@@ -161,24 +160,25 @@ namespace Task3_АТS.ATS.Port
             if (sender == null) throw new ArgumentNullException(nameof(sender));
             if (response == null) throw new ArgumentNullException(nameof(response));
             if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
+                throw new StateException($"{this} closed");
 
+
+            if (State == PortState.Open) return;
 
             var senderMac = sender as string;
-            if (senderMac == null || (senderMac != _registeredTerminalMAC && senderMac != MACAddress))
-                return;
+            if (senderMac == null || senderMac != _registeredTerminalMAC) return;
 
             if (!IsPortBinded)
             {
                 var r = new DropedResponse(response.Request, DropedResponse.PortUnbind);
-                ProcessResponse(this, r);
+                OnProcessResponseEvent(r);
                 return;
             }
 
             if (!IsBindedPortNotClosed)
             {
                 var r = new DropedResponse(response.Request, DropedResponse.TargetPortUnplagged);
-                ProcessResponse(this, r);
+                OnProcessResponseEvent(r);
                 return;
             }
 
@@ -189,24 +189,25 @@ namespace Task3_АТS.ATS.Port
             if (sender == null) throw new ArgumentNullException(nameof(sender));
             if (request == null) throw new ArgumentNullException(nameof(request));
             if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
+                throw new StateException($"{this} closed");
 
+
+            if (State == PortState.Open) return;
 
             var senderMac = sender as string;
-            if (senderMac == null || (senderMac != _bindedPortMAC && senderMac != MACAddress))
-                return;
+            if (senderMac == null || senderMac != _bindedPortMAC) return;
 
             if (!IsTerminalRegistered)
             {
                 var r = new DropedResponse(request, DropedResponse.TerminalNotRegistered);
-                ProcessResponse(this, r);
+                OnSendResponseEvent(r);
                 return;
             }
 
             if (!IsRegisteredTerminalPluged)
             {
                 var r = new DropedResponse(request, DropedResponse.TerminalUnplagged);
-                ProcessResponse(this, r);
+                OnSendResponseEvent(r);
                 return;
             }
 
@@ -217,24 +218,25 @@ namespace Task3_АТS.ATS.Port
             if (sender == null) throw new ArgumentNullException(nameof(sender));
             if (response == null) throw new ArgumentNullException(nameof(response));
             if (State == PortState.Close)
-                throw new StateException($"{this} unplagged");
+                throw new StateException($"{this} closed");
 
+
+            if (State == PortState.Open) return;
 
             var senderMac = sender as string;
-            if (senderMac == null || (senderMac != _bindedPortMAC && senderMac != MACAddress))
-                return;
+            if (senderMac == null || senderMac != _bindedPortMAC) return;
 
             if (!IsTerminalRegistered)
             {
                 var r = new DropedResponse(response.Request, DropedResponse.TerminalNotRegistered);
-                ProcessResponse(this, r);
+                OnSendResponseEvent(r);
                 return;
             }
 
             if (!IsRegisteredTerminalPluged)
             {
                 var r = new DropedResponse(response.Request, DropedResponse.TerminalUnplagged);
-                ProcessResponse(this, r);
+                OnSendResponseEvent(r);
                 return;
             }
 
@@ -255,13 +257,25 @@ namespace Task3_АТS.ATS.Port
         }
         public override string ToString()
         {
-            return $"Port: {base.ToString()}";
+            return $"Port[{base.ToString()}]";
         }
 
-        protected abstract IRequest SendRequestPreparation(IRequest request);
-        protected abstract IResponse SendResponsePreparation(IResponse response);
-        protected abstract IRequest ProcessRequestPreparation(IRequest request);
-        protected abstract IResponse ProcessResponsePreparation(IResponse response);
+        protected virtual IRequest SendRequestPreparation(IRequest request)
+        {
+            return request;
+        }
+        protected virtual IResponse SendResponsePreparation(IResponse response)
+        {
+            return response;
+        }
+        protected virtual IRequest ProcessRequestPreparation(IRequest request)
+        {
+            return request;
+        }
+        protected virtual IResponse ProcessResponsePreparation(IResponse response)
+        {
+            return response;
+        }
 
         private void OnStateChangingEvent(PortState newState)
         {
