@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Task3_АТS.ATS;
+using Task3_АТS.ATS.Station;
 
 namespace Task3_АТS.BillingSystem
 {
     public interface IBillingSystem
     {
-        void ProcessConnectionFailed(object sender, CallInfo call);
-        void ProcessCall(object sender, CallInfo call);
+        void RegisterStation(IStation station);
+        void AddClient(PhoneNumber phoneNumber, ITariff tariff);
+        bool TryChangeTariff(PhoneNumber phoneNumber, ITariff newTariff);
+        void StartNewPeriod();
+        ICollection<CallInfo> GetStatisticForPeriod(PhoneNumber phoneNumber);
+        int GetDebt(PhoneNumber phoneNumber);
     }
 }

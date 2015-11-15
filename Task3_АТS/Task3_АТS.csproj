@@ -51,8 +51,9 @@
     <Compile Include="ATS\PhoneNumber.cs" />
     <Compile Include="ATS\Port\IPort.cs" />
     <Compile Include="ATS\Port\Port.cs" />
-    <Compile Include="BillingSystem\BillingSystem.cs" />
+    <Compile Include="Test\TestBillingSystem.cs" />
     <Compile Include="BillingSystem\IBillingSystem.cs" />
+    <Compile Include="BillingSystem\ITariff.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ATS\Request\IRequest.cs" />
@@ -65,9 +66,11 @@
     <Compile Include="ATS\Terminal\ITerminal.cs" />
     <Compile Include="ATS\Terminal\Terminal.cs" />
     <Compile Include="ATS\Exceptions\StateException.cs" />
-    <Compile Include="Test\MessageRequest.cs" />
+    <Compile Include="Test\TestProvider.cs" />
+    <Compile Include="ATS\Request\MessageRequest.cs" />
     <Compile Include="Test\TestPort.cs" />
     <Compile Include="Test\TestStation.cs" />
+    <Compile Include="Test\TestTariff.cs" />
     <Compile Include="Test\TestTerminal.cs" />
   </ItemGroup>
   <ItemGroup>

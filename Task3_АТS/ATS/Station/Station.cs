@@ -198,7 +198,8 @@ namespace Task3_АТS.ATS.Station
             IPort targetPort = GetPortByPhoneNumber(connectRequest.Target);
 
             if (sourcePort != null && sourcePort.State == PortState.Open &&
-                targetPort != null && targetPort.State == PortState.Open)
+                targetPort != null && targetPort.State == PortState.Open &&
+                sourcePort.MACAddress != targetPort.MACAddress)
             {
                 sourcePort.BindPort(targetPort);
                 targetPort.BindPort(sourcePort);

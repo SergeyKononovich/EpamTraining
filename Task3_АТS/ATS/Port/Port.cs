@@ -132,9 +132,7 @@ namespace Task3_АТS.ATS.Port
             if (request == null) throw new ArgumentNullException(nameof(request));
             if (State == PortState.Close)
                 throw new StateException($"{this} closed");
-
-
-            if (State == PortState.Open) return;
+            
 
             var senderMac = sender as string;
             if (senderMac == null || senderMac != _registeredTerminalMAC) return;
@@ -161,9 +159,7 @@ namespace Task3_АТS.ATS.Port
             if (response == null) throw new ArgumentNullException(nameof(response));
             if (State == PortState.Close)
                 throw new StateException($"{this} closed");
-
-
-            if (State == PortState.Open) return;
+            
 
             var senderMac = sender as string;
             if (senderMac == null || senderMac != _registeredTerminalMAC) return;
