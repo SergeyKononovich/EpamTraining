@@ -1,4 +1,4 @@
-﻿namespace Task3_АТS.Request
+﻿namespace Task3_АТS.ATS.Request
 {
     public class ConnectRequest : IRequest
     {

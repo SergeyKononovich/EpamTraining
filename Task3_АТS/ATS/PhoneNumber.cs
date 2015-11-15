@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Task3_АТS
+namespace Task3_АТS.ATS
 {
     public struct PhoneNumber : IEquatable<PhoneNumber>
     {
         private readonly string _phoneNumber;
         public string Value => _phoneNumber;
 
-
+        
         public PhoneNumber(string phoneNumber)
         {
             _phoneNumber = phoneNumber;

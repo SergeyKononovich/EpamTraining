@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task3_АТS.Exceptions
+namespace Task3_АТS.ATS.Exceptions
 {
     public class StateException : Exception
     {
