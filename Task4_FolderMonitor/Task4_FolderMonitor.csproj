@@ -58,12 +58,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBL\ClientModel.cs" />
-    <Compile Include="DBL\GoodsModel.cs" />
-    <Compile Include="DBL\ModelBase.cs" />
-    <Compile Include="DBL\ManagerModel.cs" />
-    <Compile Include="DBL\SaleModel.cs" />
-    <Compile Include="DBL\StoreContext.cs" />
+    <Compile Include="BL\Entities\Client.cs" />
+    <Compile Include="BL\Entities\Goods.cs" />
+    <Compile Include="BL\IDAL\IClientRepository.cs" />
+    <Compile Include="BL\IDAL\IDAO.cs" />
+    <Compile Include="BL\IDAL\IGoodsRepository.cs" />
+    <Compile Include="BL\IDAL\IManagerRepository.cs" />
+    <Compile Include="BL\IDAL\IRepository.cs" />
+    <Compile Include="BL\IDAL\ISaleRepository.cs" />
+    <Compile Include="BL\Entities\Manager.cs" />
+    <Compile Include="BL\Entities\Sale.cs" />
+    <Compile Include="DAL\Repositories\ClientRepository.cs" />
+    <Compile Include="DAL\DAO.cs" />
+    <Compile Include="DAL\Repositories\GoodsRepository.cs" />
+    <Compile Include="DAL\Repositories\ManagerRepository.cs" />
+    <Compile Include="DAL\Repositories\RepositoryBase.cs" />
+    <Compile Include="DAL\Repositories\SaleRepository.cs" />
+    <Compile Include="Data\Mapping\ClientEntityMap.cs" />
+    <Compile Include="Data\Entities\ClientEntity.cs" />
+    <Compile Include="Data\Entities\GoodsEntity.cs" />
+    <Compile Include="Data\Entities\ManagerEntity.cs" />
+    <Compile Include="Data\Entities\SaleEntity.cs" />
+    <Compile Include="Data\Mapping\GoodsEntityMap.cs" />
+    <Compile Include="Data\Mapping\ManagerEntityMap.cs" />
+    <Compile Include="Data\Mapping\SaleEntityMap.cs" />
+    <Compile Include="Data\StoreContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,8 +91,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BL\" />
-    <Folder Include="DAL\" />
+    <Folder Include="Client\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
