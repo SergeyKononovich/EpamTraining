@@ -20,9 +20,12 @@ namespace Task4_FolderMonitor.Data.Mapping
             ToTable("Sales");
 
             // relationship  
-            HasRequired(t => t.Manager).WithMany(c => c.Dealings).WillCascadeOnDelete(false);
-            HasRequired(t => t.Client).WithMany(c => c.Dealings).WillCascadeOnDelete(false);
-            HasRequired(t => t.Goods).WithMany(c => c.Dealings).WillCascadeOnDelete(false);
+            HasRequired(t => t.Manager).WithMany(c => c.Dealings)
+                .HasForeignKey(e => e.ManagerId).WillCascadeOnDelete(false);
+            HasRequired(t => t.Client).WithMany(c => c.Dealings)
+                .HasForeignKey(e => e.ClientId).WillCascadeOnDelete(false);
+            HasRequired(t => t.Goods).WithMany(c => c.Dealings)
+                .HasForeignKey(e => e.GoodsId).WillCascadeOnDelete(false);
         }
     }
 }

@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using AutoMapper;
 using Task4_FolderMonitor.BL.IDAL;
 using Task4_FolderMonitor.Data;
+using Task4_FolderMonitor.Data.Entities;
 
 namespace Task4_FolderMonitor.DAL.Repositories
 {
     public abstract class RepositoryBase<TEntity, T> : IRepository<T>
-        where TEntity : class
+        where TEntity : class, IEntity
         where T : class
     {
-        private StoreContext Context { get; }
+        protected StoreContext Context { get; }
 
-        public ICollection<T> List
-        {
-            get { return Mapper.Map<DbSet<TEntity>, List<T>>(Context.Set<TEntity>()); }
-        }
+        public object Locker { get; } = new object();
 
 
         protected RepositoryBase(StoreContext context)
@@ -25,38 +26,86 @@ namespace Task4_FolderMonitor.DAL.Repositories
 
             Context = context;
         }
-        public void Add(T entity)
+        
+        public ICollection<T> GetAll()
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            return Mapper.Map<DbSet<TEntity>, List<T>>(Context.Set<TEntity>());
+        }
+        public async Task<ICollection<T>> GetAllAsync()
+        {
+            var t = Context.Set<TEntity>().ToListAsync();
+            var set = await t;
+            return Mapper.Map<List<TEntity>, ICollection<T>>(set);
+        }
+        public T Add(T entityBL)
+        {
+            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
 
-            var model = Mapper.Map<TEntity>(entity);
-            Context.Set<TEntity>().Add(model);
+            var entity = Mapper.Map<TEntity>(entityBL);
+            var newEntity = Context.Set<TEntity>().Add(entity);
+            Context.SaveChanges();
+            
+            return Mapper.Map<T>(newEntity);
+        }
+        public async Task<T> AddAsync(T entityBL)
+        {
+            var entity = Mapper.Map<TEntity>(entityBL);
+            var newEntity = Context.Set<TEntity>().Add(entity);
+            await Context.SaveChangesAsync();
+
+            return Mapper.Map<T>(newEntity);
+        }
+        public void Delete(T entityBL)
+        {
+            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
+
+            var entity = Mapper.Map<TEntity>(entityBL);
+            Context.Set<TEntity>().Remove(entity);
             Context.SaveChanges();
         }
-        public void Delete(T entity)
+        public async Task DeleteAsync(T entityBL)
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
 
-            var model = Mapper.Map<TEntity>(entity);
-            Context.Set<TEntity>().Remove(model);
-            Context.SaveChanges();
+            var entity = Mapper.Map<TEntity>(entityBL);
+            Context.Set<TEntity>().Remove(entity);
+            await Context.SaveChangesAsync();
         }
-        public T FindById(int id)
+        public void Update(T entityBL, int id)
         {
-            var model = Context.Set<TEntity>().Find(id);
-
-            return Mapper.Map<T>(model);
-        }
-        public void Update(T updated, int id)
-        {
-            if (updated == null) throw new ArgumentNullException(nameof(updated));
+            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
             
             var existing = Context.Set<TEntity>().Find(id);
             if (existing != null)
             {
-                Context.Entry(existing).CurrentValues.SetValues(updated);
+                var entity = Mapper.Map<TEntity>(entityBL);
+                Context.Entry(existing).CurrentValues.SetValues(entity);
                 Context.SaveChanges();
             }
+        }
+        public async Task UpdateAsync(T entityBL, int id)
+        {
+            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
+
+            var existing = await Context.Set<TEntity>().FindAsync(id);
+            if (existing != null)
+            {
+                var entity = Mapper.Map<TEntity>(entityBL);
+                Context.Entry(existing).CurrentValues.SetValues(entity);
+                await Context.SaveChangesAsync();
+            }
+        }
+        public T FindById(int id)
+        {
+            var entity = Context.Set<TEntity>().Find(id);
+
+            return Mapper.Map<T>(entity);
+        }
+        public async Task<T> FindByIdAsync(int id)
+        {
+            var entity = await Context.Set<TEntity>().FindAsync(id);
+
+            return Mapper.Map<T>(entity);
         }
     }
 }

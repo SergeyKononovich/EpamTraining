@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Task4_FolderMonitor.Data.Entities
 {
-    public class ManagerEntity
+    public class ManagerEntity : IEntity
     {
         public int Id { get; set; }
         public string SecondName { get; set; }
