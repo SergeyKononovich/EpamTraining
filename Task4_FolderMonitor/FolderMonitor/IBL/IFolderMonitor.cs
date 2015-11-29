@@ -1,4 +1,4 @@
-﻿namespace Task4_FolderMonitor.FolderMonitorClient.IBL
+﻿namespace Task4_FolderMonitor.FolderMonitor.IBL
 {
     public interface IFolderMonitor
     {

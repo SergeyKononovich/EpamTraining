@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Threading.Tasks;
 using AutoMapper;
-using Task4_FolderMonitor.BL.IDAL;
 using Task4_FolderMonitor.BL.IDAL.IRepositories;
 using Task4_FolderMonitor.Data;
 using Task4_FolderMonitor.Data.Entities;

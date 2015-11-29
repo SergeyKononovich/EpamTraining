@@ -60,9 +60,12 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -89,8 +92,14 @@
     <Compile Include="BL\Utils\Utilities.cs" />
     <Compile Include="DAL\DAOFactory.cs" />
     <Compile Include="Data\Entities\IEntity.cs" />
-    <Compile Include="FolderMonitorClient\FolderMonitorClient.cs" />
-    <Compile Include="FolderMonitorClient\IBL\IFolderMonitor.cs" />
+    <Compile Include="FolderMonitor\FolderMonitorClient.cs" />
+    <Compile Include="FolderMonitor\FolderMonitorService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FolderMonitor\FolderMonitorService.Designer.cs">
+      <DependentUpon>FolderMonitorService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderMonitor\IBL\IFolderMonitor.cs" />
     <Compile Include="DAL\Repositories\ClientRepository.cs" />
     <Compile Include="DAL\DAO.cs" />
     <Compile Include="DAL\Repositories\GoodsRepository.cs" />
@@ -107,11 +116,36 @@
     <Compile Include="Data\Mapping\SaleEntityMap.cs" />
     <Compile Include="Data\StoreContext.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DeleteService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="InstallService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="StartService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="StopService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using AutoMapper;
 using Task4_FolderMonitor.BL.Entities;
 using Task4_FolderMonitor.BL.IDAL;

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Infrastructure;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +13,7 @@ using Task4_FolderMonitor.BL.Entities;
 using Task4_FolderMonitor.BL.IDAL;
 using Task4_FolderMonitor.BL.Utils;
 using Task4_FolderMonitor.DAL;
-using Task4_FolderMonitor.FolderMonitorClient.IBL;
+using Task4_FolderMonitor.FolderMonitor.IBL;
 
 namespace Task4_FolderMonitor.BL
 {

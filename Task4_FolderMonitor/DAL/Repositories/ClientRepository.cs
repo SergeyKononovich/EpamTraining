@@ -1,9 +1,6 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using AutoMapper;
 using Task4_FolderMonitor.BL.Entities;
-using Task4_FolderMonitor.BL.IDAL;
 using Task4_FolderMonitor.BL.IDAL.IRepositories;
 using Task4_FolderMonitor.Data;
 using Task4_FolderMonitor.Data.Entities;

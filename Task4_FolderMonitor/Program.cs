@@ -1,34 +1,33 @@
 ﻿using System;
+using System.Reflection;
+using System.ServiceProcess;
 using System.Threading;
 using Common.Logging;
-using Task4_FolderMonitor.BL;
 using Task4_FolderMonitor.Data;
-using Task4_FolderMonitor.Data.Entities;
+using Task4_FolderMonitor.FolderMonitor;
 
 namespace Task4_FolderMonitor
 {
     class Program
     {
+        private static readonly ILog Log = LogManager.GetLogger("Program");
+
         static void Main(string[] args)
         {
-            try
+            //ClearDB();
+            
+            if (!Environment.UserInteractive)
             {
-                ClearDB();
-
-                LogManager.GetLogger<Program>().Trace(Thread.CurrentThread.ManagedThreadId);
-                var monitor = new FolderMonitor();
-                monitor.Start();
-
-                Console.WriteLine("Press key to cancel...");
-                Console.ReadKey();
-                monitor.Cancel();
+                ServiceBase[] servicesToRun = { new FolderMonitorService() };
+                Log.Trace("Service starting");
+                ServiceBase.Run(servicesToRun);
             }
-            catch (Exception e)
+            else
             {
-                LogManager.GetLogger<Program>().Trace(e);
+                var client = new FolderMonitorClient();
+                Log.Trace("Client starting");
+                client.Start();
             }
-
-             Console.ReadKey();
         }
 
         static void ClearDB()
