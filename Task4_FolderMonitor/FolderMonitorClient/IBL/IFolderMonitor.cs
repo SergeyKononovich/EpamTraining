@@ -2,6 +2,8 @@
 {
     public interface IFolderMonitor
     {
-         
+        void Start();
+        void Stop();
+        void Cancel();
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Task4_FolderMonitor.Data.Entities
 {

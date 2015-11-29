@@ -3,6 +3,7 @@ using FileHelpers;
 
 namespace Task4_FolderMonitor.BL.Utils
 {
+    // used when parsing .csv file
     [DelimitedRecord(",")]
     public class SaleRecord
     {

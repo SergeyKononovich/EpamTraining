@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Task4_FolderMonitor.Data.Entities
 {

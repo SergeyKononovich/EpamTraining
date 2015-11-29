@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Data;
 using AutoMapper;
 using Task4_FolderMonitor.BL.Entities;
 using Task4_FolderMonitor.BL.IDAL;
+using Task4_FolderMonitor.BL.IDAL.IRepositories;
 using Task4_FolderMonitor.Data;
 using Task4_FolderMonitor.Data.Entities;
 using Task4_FolderMonitor.DAL.Repositories;
 
 namespace Task4_FolderMonitor.DAL
 {
-    public class DAO : IDAO, IDisposable
+    public class DAO : IDAO
     {
-        public StoreContext Context { get; }
+        private StoreContext Context { get; }
+        
         public IClientRepository ClientRepository { get; }
         public IGoodsRepository GoodsRepository { get; }
         public IManagerRepository ManagerRepository { get; }

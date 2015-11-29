@@ -6,7 +6,7 @@ namespace Task4_FolderMonitor.FolderMonitorClient
 {
     public class FolderMonitorClient
     {
-        private IFolderMonitor FolderMonitor { get; }
+        private readonly IFolderMonitor _folderMonitor;
 
 
         public FolderMonitorClient()
@@ -17,7 +17,7 @@ namespace Task4_FolderMonitor.FolderMonitorClient
         {
             if (folderMonitor == null) throw new ArgumentNullException(nameof(folderMonitor));
 
-            FolderMonitor = folderMonitor;
+            _folderMonitor = folderMonitor;
         }
     }
 }

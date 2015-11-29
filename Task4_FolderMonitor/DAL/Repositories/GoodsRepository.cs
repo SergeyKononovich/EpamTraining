@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Task4_FolderMonitor.BL.Entities;
 using Task4_FolderMonitor.BL.IDAL;
+using Task4_FolderMonitor.BL.IDAL.IRepositories;
 using Task4_FolderMonitor.Data;
 using Task4_FolderMonitor.Data.Entities;
 
@@ -16,17 +17,11 @@ namespace Task4_FolderMonitor.DAL.Repositories
         {
         }
 
+
         public Goods FindByName(string name)
         {
             var entity = Context.Set<GoodsEntity>()
                 .SingleOrDefault(e => e.Name.Equals(name));
-
-            return Mapper.Map<Goods>(entity);
-        }
-        public async Task<Goods> FindByNameAsync(string name)
-        {
-            var entity = await Context.Set<GoodsEntity>()
-                .SingleOrDefaultAsync(e => e.Name.Equals(name));
 
             return Mapper.Map<Goods>(entity);
         }
