@@ -1,0 +1,24 @@
+﻿@model WebInterface.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Users";
+}
+<h2>@ViewBag.Title.</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <ul class="nav nav-pills nav-stacked">
+            <li>@Ajax.ActionLink("Add user", "Register", "Account",
+                                 new AjaxOptions { UpdateTargetId = "results",
+                                                   LoadingElementId = "loading" })</li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        <img id="loading" src="@Url.Content("~/Content/Images/loading_spinner.gif")" style="display:none" />
+        <div id="results"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+}

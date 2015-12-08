@@ -1,0 +1,63 @@
+﻿@model WebInterface.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Add user";
+    ViewBag.RolesTitle = "Roles";
+}
+<h2>@ViewBag.Title.</h2>
+<img id="loading" src="@Url.Content("~/Content/Images/loading_spinner.gif")" style="display:none" />
+@using (Ajax.BeginForm("Register", "Account",
+    new AjaxOptions { UpdateTargetId = "results", LoadingElementId = "loading"},
+    new { @class = "form-horizontal", role = "form", id = "result" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Create a new account.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Login, new { @class = "col-md-2 control-label" })
+        <div class="col-md-12">
+            @Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-12">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-12">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new {@class = "col-md-2 control-label"})
+        <div class="col-md-12">
+            @Html.PasswordFor(m => m.ConfirmPassword, new {@class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserRole, new {@class = "col-md-2 control-label"})
+        <div class="col-md-12">
+            @Html.CheckBoxFor(m => m.UserRole, new {@class = "checkbox" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AdminRole, new { @class = "col-md-2 control-label" })
+        <div class="col-md-12">
+            @Html.CheckBoxFor(m => m.AdminRole, new { @class = "checkbox" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-12">
+            <input type="submit" class="btn btn-default" value="Add" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+}
