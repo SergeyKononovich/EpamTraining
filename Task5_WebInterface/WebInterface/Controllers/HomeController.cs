@@ -9,7 +9,7 @@ namespace WebInterface.Controllers
         public ActionResult Index()
         {
             if (Request.IsAuthenticated)
-                return RedirectToAction("Index", "Sales");
+                return RedirectToAction("Index", "Store");
 
             return RedirectToAction("About");
         }
@@ -19,7 +19,7 @@ namespace WebInterface.Controllers
         {
             return View();
         }
-
+        
         [AllowAnonymous]
         public ActionResult About()
         {

@@ -1,13 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
-using BL.Entities;
 using BL.IDAL.IRepositories;
 using Data;
-using Data.Entities;
+using ClientModel = BL.Models.ClientModel;
 
 namespace DAL.Repositories
 {
-    public class ClientRepository : RepositoryBase<ClientEntity, Client>, IClientRepository
+    public class ClientRepository : RepositoryBase<Data.Models.ClientModel, ClientModel>, IClientRepository
     {
         public ClientRepository(StoreContext context) 
             : base(context)
@@ -15,12 +15,14 @@ namespace DAL.Repositories
         }
 
 
-        public Client FindByFullName(string fullName)
+        public ClientModel FindByFullName(string fullName)
         {
-            var entity = Context.Set<ClientEntity>()
+            if (fullName == null) throw new ArgumentNullException(nameof(fullName));
+
+            var modelData = Context.Set<Data.Models.ClientModel>()
                 .SingleOrDefault(e => e.FullName.Equals(fullName));
 
-            return Mapper.Map<Client>(entity);
+            return Mapper.Map<ClientModel>(modelData);
         }
     }
 }

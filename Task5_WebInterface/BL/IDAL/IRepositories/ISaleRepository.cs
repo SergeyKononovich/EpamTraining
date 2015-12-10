@@ -1,8 +1,8 @@
-﻿using BL.Entities;
+﻿using BL.Models;
 
 namespace BL.IDAL.IRepositories
 {
-    public interface ISaleRepository : IRepository<Sale>
+    public interface ISaleRepository : IRepository<SaleModel>
     {
          
     }

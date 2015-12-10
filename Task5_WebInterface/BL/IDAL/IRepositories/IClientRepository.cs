@@ -1,9 +1,9 @@
-﻿using BL.Entities;
+﻿using BL.Models;
 
 namespace BL.IDAL.IRepositories
 {
-    public interface IClientRepository : IRepository<Client>
+    public interface IClientRepository : IRepository<ClientModel>
     {
-        Client FindByFullName(string fullName);
+        ClientModel FindByFullName(string fullName);
     }
 }

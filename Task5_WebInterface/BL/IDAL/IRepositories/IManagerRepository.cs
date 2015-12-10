@@ -1,9 +1,9 @@
-﻿using BL.Entities;
+﻿using BL.Models;
 
 namespace BL.IDAL.IRepositories
 {
-    public interface IManagerRepository : IRepository<Manager>
+    public interface IManagerRepository : IRepository<ManagerModel>
     {
-        Manager FindBySecondName(string secondName);
+        ManagerModel FindBySecondName(string secondName);
     }
 }

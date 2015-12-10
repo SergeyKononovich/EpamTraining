@@ -1,13 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
-using BL.Entities;
 using BL.IDAL.IRepositories;
 using Data;
-using Data.Entities;
 
 namespace DAL.Repositories
 {
-    public class ManagerRepository : RepositoryBase<ManagerEntity, Manager>, IManagerRepository
+    public class ManagerRepository : RepositoryBase<Data.Models.ManagerModel, BL.Models.ManagerModel>, IManagerRepository
     {
         public ManagerRepository(StoreContext context)
             : base(context)
@@ -15,12 +14,14 @@ namespace DAL.Repositories
         }
 
 
-        public Manager FindBySecondName(string secondName)
+        public BL.Models.ManagerModel FindBySecondName(string secondName)
         {
-            var entity = Context.Set<ManagerEntity>()
+            if (secondName == null) throw new ArgumentNullException(nameof(secondName));
+
+            var modelBL = Context.Set<Data.Models.ManagerModel>()
                 .SingleOrDefault(e => e.SecondName.Equals(secondName));
 
-            return Mapper.Map<Manager>(entity);
+            return Mapper.Map<BL.Models.ManagerModel>(modelBL);
         }
     }
 }

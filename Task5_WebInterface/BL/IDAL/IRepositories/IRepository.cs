@@ -6,9 +6,10 @@ namespace BL.IDAL.IRepositories
         where T : class
     {
         ICollection<T> GetAll();
-        T Add(T entityBL);
-        void Delete(T entityBL);
-        void Update(T entityBL, int id);
+        void Add(T modelBL);
+        void AddOrUpdate(T modelBL);
+        void Delete(T modelBL);
+        void Update(T modelBL, int id);
         T FindById(int id);
     }
 }

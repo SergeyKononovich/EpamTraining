@@ -13,13 +13,13 @@ namespace WebInterface
         private static readonly ILog Log = LogManager.GetLogger("WebInterface");
 
 
-        protected void Application_Start()
+        protected virtual void Application_Start()
         {
             Log.Trace("WebInterface setup started.");
             try
             {
-                Database.SetInitializer<ApplicationDbContext>(new AppDbInitializer());
-
+                ControllerBuilder.Current.SetControllerFactory(new CompositionRoot());
+                Database.SetInitializer(new AppDbInitializer());
                 AreaRegistration.RegisterAllAreas();
                 FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
                 RouteConfig.RegisterRoutes(RouteTable.Routes);

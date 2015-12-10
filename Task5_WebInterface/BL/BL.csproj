@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,20 +52,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Client.cs" />
-    <Compile Include="Entities\Goods.cs" />
-    <Compile Include="Entities\Manager.cs" />
-    <Compile Include="Entities\Sale.cs" />
+    <Compile Include="BO.cs" />
     <Compile Include="IDAL\IDAO.cs" />
     <Compile Include="IDAL\IRepositories\IClientRepository.cs" />
     <Compile Include="IDAL\IRepositories\IGoodsRepository.cs" />
     <Compile Include="IDAL\IRepositories\IManagerRepository.cs" />
     <Compile Include="IDAL\IRepositories\IRepository.cs" />
     <Compile Include="IDAL\IRepositories\ISaleRepository.cs" />
+    <Compile Include="Models\ClientModel.cs" />
+    <Compile Include="Models\GoodsModel.cs" />
+    <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Models\ManagerModel.cs" />
+    <Compile Include="Models\SaleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClientService.cs" />
+    <Compile Include="Services\GoodsService.cs" />
+    <Compile Include="Services\ManagerService.cs" />
+    <Compile Include="Services\ServiceBase.cs" />
+    <Compile Include="Services\SaleService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UIPart\UIPart.csproj">
+      <Project>{2da10226-b957-470c-ae2c-fa2fddb8555f}</Project>
+      <Name>UIPart</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

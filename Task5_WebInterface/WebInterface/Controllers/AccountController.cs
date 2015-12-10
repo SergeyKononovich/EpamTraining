@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -110,10 +108,9 @@ namespace WebInterface.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    if (model.UserRole)
-                        await UserManager.AddToRoleAsync(user.Id, "user");
+                    await UserManager.AddToRoleAsync(user.Id, "user");
 
-                    if (model.AdminRole)
+                    if (model.IsAdmin)
                         await UserManager.AddToRoleAsync(user.Id, "admin");
 
                     ViewBag.Message = $"User {user.UserName} successfully added";

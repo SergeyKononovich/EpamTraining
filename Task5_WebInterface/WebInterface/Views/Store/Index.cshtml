@@ -1,0 +1,32 @@
+﻿@using GridMvc.Html
+@using UIPart.Models
+@{
+    ViewBag.Title = "Sales";
+}
+
+@helper CustomRenderingOfColumn(SaleModel m)
+{
+    <ul class="breadcrumb-simple">
+        <li>@Html.ActionLink("change", "About", "Home")</li>
+        <li>@Html.ActionLink("delete", "About", "Home")</li>
+    </ul>
+}
+
+<h2>@ViewBag.Title.</h2>
+@Html.Grid(Model as IEnumerable<SaleModel>).Columns(columns =>
+{
+    columns.Add(m => m.Id).Titled("ID").Sortable(true).Filterable(true).SetWidth(70);
+    columns.Add(m => m.Date).Titled("Data").Sortable(true).Filterable(true).SetWidth(170); ;
+    columns.Add(m => m.Goods.Name).Titled("Goods").Sortable(true).Filterable(true).SetWidth(140); ;
+    columns.Add(m => m.Manager.SecondName).Titled("Manager").Sortable(true).Filterable(true).SetWidth(100); ;
+    columns.Add(m => m.Client.FullName).Titled("Client").Sortable(true).Filterable(true).SetWidth(150);
+    columns.Add(m => m.SellingPrice).Titled("Selling price (BYR)").Sortable(true).Filterable(true).SetWidth(70);
+    columns.Add().Titled("Actions").Encoded(false).Sanitized(false).RenderValueAs(m => CustomRenderingOfColumn(m));
+}).WithPaging(20)
+
+@section Scripts {
+    @Styles.Render("~/Content/Site.css")
+    @Styles.Render("~/Content/Gridmvc.css")
+    @Scripts.Render("~/Scripts/gridmvc.js")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+}

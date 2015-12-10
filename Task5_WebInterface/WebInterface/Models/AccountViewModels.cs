@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WebInterface.Models
 {
@@ -47,12 +46,9 @@ namespace WebInterface.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [Display(Name = "User")]
-        public bool UserRole { get; set; }
-
-        [Display(Name = "Admin")]
-        public bool AdminRole { get; set; }
+        
+        [Display(Name = "Is admin")]
+        public bool IsAdmin { get; set; }
     }
 
     public class ResetPasswordViewModel

@@ -1,13 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
-using BL.Entities;
 using BL.IDAL.IRepositories;
 using Data;
-using Data.Entities;
+using GoodsModel = BL.Models.GoodsModel;
 
 namespace DAL.Repositories
 {
-    public class GoodsRepository : RepositoryBase<GoodsEntity, Goods>, IGoodsRepository
+    public class GoodsRepository : RepositoryBase<Data.Models.GoodsModel, GoodsModel>, IGoodsRepository
     {
         public GoodsRepository(StoreContext context) 
             : base(context)
@@ -15,12 +15,14 @@ namespace DAL.Repositories
         }
 
 
-        public Goods FindByName(string name)
+        public GoodsModel FindByName(string name)
         {
-            var entity = Context.Set<GoodsEntity>()
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
+            var modelData = Context.Set<Data.Models.GoodsModel>()
                 .SingleOrDefault(e => e.Name.Equals(name));
 
-            return Mapper.Map<Goods>(entity);
+            return Mapper.Map<GoodsModel>(modelData);
         }
     }
 }

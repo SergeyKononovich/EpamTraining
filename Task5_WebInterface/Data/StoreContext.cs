@@ -5,7 +5,7 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using Data.Entities;
+using Data.Models;
 
 namespace Data
 {
@@ -14,16 +14,16 @@ namespace Data
         private static readonly ILog Log = LogManager.GetLogger("Data");
 
         public StoreContext()
-            : base("DBConnection")
+            : base("Store")
         {
             Log.Trace("Store context created");
         }
 
 
-        public DbSet<ManagerEntity> Managers { get; set; }
-        public DbSet<ClientEntity> Clients { get; set; }
-        public DbSet<GoodsEntity> Goods { get; set; }
-        public DbSet<SaleEntity> Sales { get; set; }
+        public DbSet<ManagerModel> Managers { get; set; }
+        public DbSet<ClientModel> Clients { get; set; }
+        public DbSet<GoodsModel> Goods { get; set; }
+        public DbSet<SaleModel> Sales { get; set; }
 
 
         public string CreateDatabaseScript()

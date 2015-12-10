@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Linq;
 using AutoMapper;
 using BL.IDAL.IRepositories;
 using Data;
-using Data.Entities;
 
 namespace DAL.Repositories
 {
-    public abstract class RepositoryBase<TEntity, T> : IRepository<T>
-        where TEntity : class, IEntity
-        where T : class
+    public abstract class RepositoryBase<TModelData, TModelBL> : IRepository<TModelBL>
+        where TModelData : Data.Models.ModelBase
+        where TModelBL : BL.Models.ModelBase
     {
         protected RepositoryBase(StoreContext context)
         {
@@ -23,45 +24,52 @@ namespace DAL.Repositories
         protected StoreContext Context { get; }
 
 
-        public virtual ICollection<T> GetAll()
+        public virtual ICollection<TModelBL> GetAll()
         {
-            return Mapper.Map<DbSet<TEntity>, List<T>>(Context.Set<TEntity>());
+            var a = Context.Set<TModelData>().ToList();
+            return Mapper.Map<List<TModelData>, List<TModelBL>>(Context.Set<TModelData>().ToList());
         }
-        public virtual T Add(T entityBL)
+        public virtual void Add(TModelBL modelBL)
         {
-            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
+            if (modelBL == null) throw new ArgumentNullException(nameof(modelBL));
 
-            var entity = Mapper.Map<TEntity>(entityBL);
-            Context.Set<TEntity>().Add(entity);
-            Context.SaveChanges();
-
-            return Mapper.Map<T>(entity);
-        }
-        public virtual void Delete(T entityBL)
-        {
-            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
-
-            var entity = Mapper.Map<TEntity>(entityBL);
-            Context.Set<TEntity>().Remove(entity);
+            var modelData = Mapper.Map<TModelData>(modelBL);
+            Context.Set<TModelData>().Add(modelData);
             Context.SaveChanges();
         }
-        public virtual void Update(T entityBL, int id)
+        public virtual void AddOrUpdate(TModelBL modelBL)
         {
-            if (entityBL == null) throw new ArgumentNullException(nameof(entityBL));
+            if (modelBL == null) throw new ArgumentNullException(nameof(modelBL));
+
+            var modelData = Mapper.Map<TModelData>(modelBL);
+            Context.Set<TModelData>().AddOrUpdate(modelData);
+            Context.SaveChanges();
+        }
+        public virtual void Delete(TModelBL modelBL)
+        {
+            if (modelBL == null) throw new ArgumentNullException(nameof(modelBL));
+
+            var modelData = Mapper.Map<TModelData>(modelBL);
+            Context.Set<TModelData>().Remove(modelData);
+            Context.SaveChanges();
+        }
+        public virtual void Update(TModelBL modelBL, int id)
+        {
+            if (modelBL == null) throw new ArgumentNullException(nameof(modelBL));
             
-            var existing = Context.Set<TEntity>().Find(id);
+            var existing = Context.Set<TModelData>().Find(id);
             if (existing != null)
             {
-                var entity = Mapper.Map<TEntity>(entityBL);
-                Context.Entry(existing).CurrentValues.SetValues(entity);
+                var modelData = Mapper.Map<TModelData>(modelBL);
+                Context.Entry(existing).CurrentValues.SetValues(modelData);
                 Context.SaveChanges();
             }
         }
-        public virtual T FindById(int id)
+        public virtual TModelBL FindById(int id)
         {
-            var entity = Context.Set<TEntity>().Find(id);
+            var modelData = Context.Set<TModelData>().Find(id);
 
-            return Mapper.Map<T>(entity);
+            return Mapper.Map<TModelBL>(modelData);
         }
     }
 }

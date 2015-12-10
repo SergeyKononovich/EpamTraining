@@ -1,11 +1,9 @@
 ﻿using System;
 using AutoMapper;
-using BL.Entities;
 using BL.IDAL;
 using BL.IDAL.IRepositories;
 using Common.Logging;
 using Data;
-using Data.Entities;
 using DAL.Repositories;
 
 namespace DAL
@@ -17,11 +15,11 @@ namespace DAL
 
         static DAO()
         {
-            Log.Trace("Start BL entites to Data entities mapping in static DAO constructor.");
-            Mapper.CreateMap<ClientEntity, Client>().ReverseMap();
-            Mapper.CreateMap<GoodsEntity, Goods>().ReverseMap();
-            Mapper.CreateMap<ManagerEntity, Manager>().ReverseMap();
-            Mapper.CreateMap<SaleEntity, Sale>()
+            Log.Trace("Start BL models to Data models mapping.");
+            Mapper.CreateMap<Data.Models.ClientModel, BL.Models.ClientModel>().ReverseMap();
+            Mapper.CreateMap<Data.Models.GoodsModel, BL.Models.GoodsModel>().ReverseMap();
+            Mapper.CreateMap<Data.Models.ManagerModel, BL.Models.ManagerModel>().ReverseMap();
+            Mapper.CreateMap<Data.Models.SaleModel, BL.Models.SaleModel>()
                 .ReverseMap()
                 .ForMember(s => s.Client, m => m.MapFrom(s => s.Client.Id == 0 ? s.Client : null))
                 .ForMember(s => s.ClientId, m => m.MapFrom(s => s.Client.Id))
@@ -52,7 +50,7 @@ namespace DAL
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
-                Context?.Dispose();
+                Context.Dispose();
             Log.Trace("DAO disposed.");
         }
 

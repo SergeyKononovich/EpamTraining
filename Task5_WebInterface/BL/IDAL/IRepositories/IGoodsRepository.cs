@@ -1,9 +1,9 @@
-﻿using BL.Entities;
+﻿using BL.Models;
 
 namespace BL.IDAL.IRepositories
 {
-    public interface IGoodsRepository : IRepository<Goods>
+    public interface IGoodsRepository : IRepository<GoodsModel>
     {
-        Goods FindByName(string name);
+        GoodsModel FindByName(string name);
     }
 }
