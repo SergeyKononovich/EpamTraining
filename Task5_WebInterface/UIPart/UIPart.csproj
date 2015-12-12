@@ -49,6 +49,7 @@
     <Compile Include="Models\ClientModel.cs" />
     <Compile Include="Models\GoodsModel.cs" />
     <Compile Include="Models\ManagerModel.cs" />
+    <Compile Include="Models\SaleFilter.cs" />
     <Compile Include="Models\SaleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

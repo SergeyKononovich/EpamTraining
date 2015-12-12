@@ -1,0 +1,20 @@
+﻿
+.breadcrumb-simple {
+    padding-left: 0;
+    list-style: none;
+    background-color: transparent;
+}
+
+.breadcrumb-simple > li {
+  display: inline-block;
+}
+
+.breadcrumb-simple > li + li:before {
+  padding: 0 3px;
+  color: #cccccc;
+  content: "/\00a0";
+}
+
+#actionsBtnsGr {
+    padding-bottom: 10px;
+}

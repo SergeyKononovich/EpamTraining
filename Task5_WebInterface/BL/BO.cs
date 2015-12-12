@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using BL.IDAL;
 using BL.Services;
@@ -21,6 +22,7 @@ namespace BL
             Mapper.CreateMap<BL.Models.GoodsModel, GoodsModel>().ReverseMap();
             Mapper.CreateMap<BL.Models.ManagerModel, ManagerModel>().ReverseMap();
             Mapper.CreateMap<BL.Models.SaleModel, SaleModel>().ReverseMap();
+            Mapper.CreateMap<BL.Models.SaleFilter, SaleFilter>().ReverseMap();
         }
         public BO(IDAO dao)
         {

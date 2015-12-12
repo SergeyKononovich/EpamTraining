@@ -50,6 +50,15 @@ namespace BL.Services
             var modelBL = Mapper.Map<TModelBL>(modelUI);
             Repository.Delete(modelBL);
         }
+        public void Delete(int id)
+        {
+            Repository.Delete(id);
+        }
+        public void DeleteRange(IEnumerable<int> ids)
+        {
+            foreach (var id in ids)
+                Delete(id);
+        }
         public void Update(TModelUI modelUI, int id)
         {
             if (modelUI == null) throw new ArgumentNullException(nameof(modelUI));

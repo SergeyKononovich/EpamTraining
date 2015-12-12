@@ -10,7 +10,7 @@ using Data;
 namespace DAL.Repositories
 {
     public abstract class RepositoryBase<TModelData, TModelBL> : IRepository<TModelBL>
-        where TModelData : Data.Models.ModelBase
+        where TModelData : Data.Models.ModelBase, new() 
         where TModelBL : BL.Models.ModelBase
     {
         protected RepositoryBase(StoreContext context)
@@ -50,6 +50,13 @@ namespace DAL.Repositories
             if (modelBL == null) throw new ArgumentNullException(nameof(modelBL));
 
             var modelData = Mapper.Map<TModelData>(modelBL);
+            Context.Set<TModelData>().Remove(modelData);
+            Context.SaveChanges();
+        }
+        public virtual void Delete(int id)
+        {
+            var modelData = new TModelData { Id = id };
+            Context.Set<TModelData>().Attach(modelData);
             Context.Set<TModelData>().Remove(modelData);
             Context.SaveChanges();
         }

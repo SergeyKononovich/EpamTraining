@@ -1,9 +1,14 @@
-﻿@using GridMvc.Html
-@using UIPart.Models
+﻿@using UIPart.Models
 @{
     ViewBag.Title = "Sales";
+    ViewBag.FiltersTitle = "Filters";
+    ViewBag.RefreshButtonTitle = "Refresh";
+    ViewBag.AddButtonTitle = "Add sale";
+    ViewBag.ChangeButtonTitle = "Change selected";
+    ViewBag.DeleteButtonTitle = "Delete selected";
 }
 
+<h2>@ViewBag.Title</h2>
 @helper CustomRenderingOfColumn(SaleModel m)
 {
     <ul class="breadcrumb-simple">
@@ -12,21 +17,50 @@
     </ul>
 }
 
-<h2>@ViewBag.Title.</h2>
-@Html.Grid(Model as IEnumerable<SaleModel>).Columns(columns =>
-{
-    columns.Add(m => m.Id).Titled("ID").Sortable(true).Filterable(true).SetWidth(70);
-    columns.Add(m => m.Date).Titled("Data").Sortable(true).Filterable(true).SetWidth(170); ;
-    columns.Add(m => m.Goods.Name).Titled("Goods").Sortable(true).Filterable(true).SetWidth(140); ;
-    columns.Add(m => m.Manager.SecondName).Titled("Manager").Sortable(true).Filterable(true).SetWidth(100); ;
-    columns.Add(m => m.Client.FullName).Titled("Client").Sortable(true).Filterable(true).SetWidth(150);
-    columns.Add(m => m.SellingPrice).Titled("Selling price (BYR)").Sortable(true).Filterable(true).SetWidth(70);
-    columns.Add().Titled("Actions").Encoded(false).Sanitized(false).RenderValueAs(m => CustomRenderingOfColumn(m));
-}).WithPaging(20)
+@Html.Partial("_FiltersPanelPartial")
+
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+<div class="text-right">
+    <div class="btn-group" role="group" id="actionsBtnsGr">
+        <button class="btn btn-default" id="refreshButton">@ViewBag.RefreshButtonTitle</button>
+        <button class="btn btn-default" id="addButton">@ViewBag.AddButtonTitle</button>
+        <button class="btn btn-default" id="changeButton">@ViewBag.ChangeButtonTitle</button>
+        <button class="btn btn-default" id="deleteButton">@ViewBag.DeleteButtonTitle</button>
+    </div>
+</div>
+<table class="display" id="salesTable">
+    <thead>
+        <tr>
+            <th id="saleId">ID</th>
+            <th>Data</th>
+            <th>Goods</th>
+            <th>Manager</th>
+            <th>Client</th>
+            <th>Selling price (BYR)</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Goods</th>
+            <th>Manager</th>
+            <th>Client</th>
+            <th>Selling price (BYR)</th>
+        </tr>
+    </tfoot>
+</table>
 
 @section Scripts {
-    @Styles.Render("~/Content/Site.css")
-    @Styles.Render("~/Content/Gridmvc.css")
-    @Scripts.Render("~/Scripts/gridmvc.js")
-    @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+    @Styles.Render("~/content/datatables/css/jquery.datatables.css")
+    @Styles.Render("~/content/bootstrap-datepicker.css")
+    @Styles.Render("~/Content/Sales.css")
+    @Scripts.Render("~/scripts/jquery-ui-1.11.4.js")
+    @Scripts.Render("~/scripts/datatables/jquery.datatables.js")
+    @Scripts.Render("~/scripts/bootstrap-datepicker.js")
+    @Scripts.Render("~/Scripts/sales-table.js")
 }

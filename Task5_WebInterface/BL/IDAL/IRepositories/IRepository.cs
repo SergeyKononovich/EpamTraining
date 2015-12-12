@@ -9,6 +9,7 @@ namespace BL.IDAL.IRepositories
         void Add(T modelBL);
         void AddOrUpdate(T modelBL);
         void Delete(T modelBL);
+        void Delete(int id);
         void Update(T modelBL, int id);
         T FindById(int id);
     }

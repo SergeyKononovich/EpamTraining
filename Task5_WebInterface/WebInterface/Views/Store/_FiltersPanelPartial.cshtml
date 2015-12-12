@@ -1,0 +1,90 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                @ViewBag.FiltersTitle
+            </a>
+        </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>ID</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <p>From:</p>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="minId">
+                    </div>
+                    <div class="col-md-1">
+                        <p>To:</p>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="maxId">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Date</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <p>From:</p>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="datetime" id="minDate">
+                    </div>
+                    <div class="col-md-1">
+                        <p>To:</p>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="datetime" id="maxDate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Goods</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="goods">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Manager</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="manager">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Client</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="client">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Selling price (BYR)</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <p>From:</p>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="minPrice">
+                    </div>
+                    <div class="col-md-1">
+                        <p>To:</p>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="maxPrice">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
