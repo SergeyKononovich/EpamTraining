@@ -3,10 +3,9 @@
     ViewBag.Title = "Add user";
 }
 <h2>@ViewBag.Title.</h2>
-<img id="loading" src="@Url.Content("~/Content/Images/loading_spinner.gif")" style="display:none" />
 @using (Ajax.BeginForm("Register", "Account",
     new AjaxOptions { UpdateTargetId = "results", LoadingElementId = "loading"},
-    new { @class = "form-horizontal", role = "form", id = "result" }))
+    new { @class = "form-horizontal", role = "form"}))
 {
     @Html.AntiForgeryToken()
     <h4>Create a new account.</h4>
@@ -47,10 +46,10 @@
             <input type="submit" class="btn btn-default" value="Add" />
         </div>
     </div>
-    }
+}
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/scripts/jquery-1.10.2.min.js")
-        @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
-    }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+}

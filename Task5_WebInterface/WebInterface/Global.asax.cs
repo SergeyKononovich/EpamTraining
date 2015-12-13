@@ -3,7 +3,9 @@ using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using AutoMapper;
 using Common.Logging;
+using UIPart.Models;
 using WebInterface.Models;
 
 namespace WebInterface
@@ -12,6 +14,19 @@ namespace WebInterface
     {
         private static readonly ILog Log = LogManager.GetLogger("WebInterface");
 
+        static MvcApplication()
+        {
+            try
+            {
+                Mapper.CreateMap<SaleFilterViewModel, SalesFilter>()
+                .ForMember(m => m.Search, c => c.MapFrom(m => m.sSearch));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                throw;
+            }
+        }
 
         protected virtual void Application_Start()
         {

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using UIPart.IBL.IServices;
-using UIPart.Models;
 
 namespace UIPart.IBL
 {

@@ -4,6 +4,7 @@ namespace BL.Models
 {
     public class SaleFilter
     {
+        public string Search { get; set; }
         public int FromId { get; set; }
         public int ToId { get; set; }
         public DateTime FromDate { get; set; }

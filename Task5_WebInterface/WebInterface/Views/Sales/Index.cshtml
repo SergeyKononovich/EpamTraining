@@ -1,7 +1,5 @@
-﻿@using UIPart.Models
-@{
+﻿@{
     ViewBag.Title = "Sales";
-    ViewBag.FiltersTitle = "Filters";
     ViewBag.RefreshButtonTitle = "Refresh";
     ViewBag.AddButtonTitle = "Add sale";
     ViewBag.ChangeButtonTitle = "Change selected";
@@ -9,13 +7,6 @@
 }
 
 <h2>@ViewBag.Title</h2>
-@helper CustomRenderingOfColumn(SaleModel m)
-{
-    <ul class="breadcrumb-simple">
-        <li>@Html.ActionLink("change", "About", "Home")</li>
-        <li>@Html.ActionLink("delete", "About", "Home")</li>
-    </ul>
-}
 
 @Html.Partial("_FiltersPanelPartial")
 
@@ -26,11 +17,15 @@
 <div class="text-right">
     <div class="btn-group" role="group" id="actionsBtnsGr">
         <button class="btn btn-default" id="refreshButton">@ViewBag.RefreshButtonTitle</button>
-        <button class="btn btn-default" id="addButton">@ViewBag.AddButtonTitle</button>
-        <button class="btn btn-default" id="changeButton">@ViewBag.ChangeButtonTitle</button>
-        <button class="btn btn-default" id="deleteButton">@ViewBag.DeleteButtonTitle</button>
+        @if (User.IsInRole("admin"))
+        {
+            <button class="btn btn-default" id="addButton">@ViewBag.AddButtonTitle</button>
+            <button class="btn btn-default" id="changeButton">@ViewBag.ChangeButtonTitle</button>
+            <button class="btn btn-default" id="deleteButton">@ViewBag.DeleteButtonTitle</button>
+        }
     </div>
 </div>
+
 <table class="display" id="salesTable">
     <thead>
         <tr>

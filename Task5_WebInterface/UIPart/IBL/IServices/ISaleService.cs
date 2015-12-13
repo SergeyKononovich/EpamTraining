@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using UIPart.Models;
+﻿using UIPart.Models;
 
 namespace UIPart.IBL.IServices
 {
     public interface ISaleService : IService<SaleModel>
     {
-        ICollection<SaleModel> GetPage(SaleFilter filter, int skip, int take,
-           out int totalRecords, out int totalDisplayRecords);
+        SalesPage GetPage(SalesFilter filter, SalesSortingOptions sortOpt, int skip, int take);
     }
 }

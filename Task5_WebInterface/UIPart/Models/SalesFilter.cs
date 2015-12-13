@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UIPart.Models
 {
-    public class SaleFilter
+    public class SalesFilter
     {
+        public string Search { get; set; }
         public int FromId { get; set; }
         public int ToId { get; set; }
         public DateTime FromDate { get; set; }

@@ -5,7 +5,7 @@ namespace BL.IDAL.IRepositories
     public interface IRepository<T> 
         where T : class
     {
-        ICollection<T> GetAll();
+        IList<T> GetAll();
         void Add(T modelBL);
         void AddOrUpdate(T modelBL);
         void Delete(T modelBL);

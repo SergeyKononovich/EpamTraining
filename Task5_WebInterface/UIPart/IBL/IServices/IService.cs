@@ -5,7 +5,7 @@ namespace UIPart.IBL.IServices
     public interface IService<TModelUI> 
         where TModelUI : class
     {
-        ICollection<TModelUI> GetAll();
+        IList<TModelUI> GetAll();
         void Add(TModelUI modelUI);
         void AddOrUpdate(TModelUI modelUI);
         void Delete(TModelUI modelUI);

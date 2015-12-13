@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using AutoMapper;
@@ -24,7 +26,7 @@ namespace DAL.Repositories
         protected StoreContext Context { get; }
 
 
-        public virtual ICollection<TModelBL> GetAll()
+        public virtual IList<TModelBL> GetAll()
         {
             var a = Context.Set<TModelData>().ToList();
             return Mapper.Map<List<TModelData>, List<TModelBL>>(Context.Set<TModelData>().ToList());

@@ -1,4 +1,12 @@
-﻿<div class="panel panel-default">
+﻿@model WebInterface.Models.SaleFilterViewModel
+@{
+    ViewBag.FiltersTitle = "Filters";
+}
+
+
+
+
+<div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingOne">
         <h4 class="panel-title">
             <a role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -17,13 +25,13 @@
                         <p>From:</p>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" id="minId">
+                        @Html.TextBoxFor(m => m.FromId, new { type = "number", @class="column_filter"})
                     </div>
                     <div class="col-md-1">
                         <p>To:</p>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" id="maxId">
+                        @Html.TextBoxFor(m => m.ToId, new { type = "number", @class = "column_filter" })
                     </div>
                 </div>
                 <div class="row">
@@ -34,13 +42,13 @@
                         <p>From:</p>
                     </div>
                     <div class="col-md-3">
-                        <input type="datetime" id="minDate">
+                        @Html.TextBoxFor(m => m.FromDate, new { type = "date", @class = "column_filter" })
                     </div>
                     <div class="col-md-1">
                         <p>To:</p>
                     </div>
                     <div class="col-md-3">
-                        <input type="datetime" id="maxDate">
+                        @Html.TextBoxFor(m => m.ToDate, new { type = "date", @class = "column_filter" })
                     </div>
                 </div>
                 <div class="row">
@@ -48,7 +56,7 @@
                         <h4>Goods</h4>
                     </div>
                     <div class="col-md-2">
-                        <input type="text" id="goods">
+                        @Html.TextBoxFor(m => m.GoodsNamePart, new { type = "text", @class = "column_filter" })
                     </div>
                 </div>
                 <div class="row">
@@ -56,7 +64,7 @@
                         <h4>Manager</h4>
                     </div>
                     <div class="col-md-2">
-                        <input type="text" id="manager">
+                        @Html.TextBoxFor(m => m.ManagerSecondNamePart, new { type = "text", @class = "column_filter" })
                     </div>
                 </div>
                 <div class="row">
@@ -64,7 +72,7 @@
                         <h4>Client</h4>
                     </div>
                     <div class="col-md-2">
-                        <input type="text" id="client">
+                        @Html.TextBoxFor(m => m.ClientFullNamePart, new { type = "text", @class = "column_filter" })
                     </div>
                 </div>
                 <div class="row">
@@ -75,13 +83,13 @@
                         <p>From:</p>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" id="minPrice">
+                        @Html.TextBoxFor(m => m.FromPrice, new { type = "number", @class = "column_filter" })
                     </div>
                     <div class="col-md-1">
                         <p>To:</p>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" id="maxPrice">
+                        @Html.TextBoxFor(m => m.ToPrice, new { type = "number", @class = "column_filter" })
                     </div>
                 </div>
             </div>

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using BL.IDAL.IRepositories;
 using UIPart.IBL.IServices;
 using UIPart.Models;
@@ -14,13 +13,14 @@ namespace BL.Services
         }
 
 
-        public ICollection<SaleModel> GetPage(SaleFilter filter, int skip, int take, 
-            out int totalRecords, out int totalDisplayRecords)
+        public SalesPage GetPage(SalesFilter filter, SalesSortingOptions sortOpt, int skip, int take)
         {
             var filterBL = Mapper.Map<BL.Models.SaleFilter>(filter);
-            var salesBL = Repository.GetPage(filterBL, skip, take, out totalRecords, out totalDisplayRecords);
+            var sortOptBL = Mapper.Map<BL.Models.SalesSortingOptions>(sortOpt);
 
-            return Mapper.Map<ICollection<SaleModel>>(salesBL);
+            var salePageBL = Repository.GetPage(filterBL, sortOptBL, skip, take);
+
+            return Mapper.Map<SalesPage>(salePageBL);
         }
     }
 }

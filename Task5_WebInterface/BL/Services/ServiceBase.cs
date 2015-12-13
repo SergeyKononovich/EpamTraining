@@ -24,10 +24,10 @@ namespace BL.Services
         protected TRepository Repository { get; }
 
 
-        public ICollection<TModelUI> GetAll()
+        public IList<TModelUI> GetAll()
         {
             var a = Repository.GetAll().ToList();
-            return Mapper.Map<ICollection<TModelBL>, ICollection<TModelUI>>(Repository.GetAll());
+            return Mapper.Map<IList<TModelBL>, IList<TModelUI>>(Repository.GetAll());
         }
         public void Add(TModelUI modelUI)
         {
