@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BL.IDAL.IRepositories;
 
 namespace BL.IDAL
@@ -9,5 +10,8 @@ namespace BL.IDAL
         IGoodsRepository GoodsRepository { get; } 
         IManagerRepository ManagerRepository { get; } 
         ISaleRepository SaleRepository { get; }
+
+
+        IDictionary<string, int> Top5GoodsBySalesCount();
     }
 }

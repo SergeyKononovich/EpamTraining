@@ -1,5 +1,6 @@
 ﻿using System;
 using UIPart.IBL.IServices;
+using UIPart.Models;
 
 namespace UIPart.IBL
 {
@@ -9,5 +10,7 @@ namespace UIPart.IBL
         IGoodsService GoodsService { get; }
         IManagerService ManagerService { get; }
         ISaleService SaleService { get; }
+
+        Statistic GetStatistic();
     }
 }

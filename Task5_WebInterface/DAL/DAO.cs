@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BL.IDAL;
 using BL.IDAL.IRepositories;
+using BL.Models;
 using Common.Logging;
 using Data;
 using DAL.Repositories;
@@ -61,5 +64,15 @@ namespace DAL
         public IGoodsRepository GoodsRepository { get; }
         public IManagerRepository ManagerRepository { get; }
         public ISaleRepository SaleRepository { get; }
+
+
+        public IDictionary<string, int> Top5GoodsBySalesCount()
+        {
+            var top = (from q in Context.Goods
+                        orderby q.Dealings.Count() descending
+                        select new { Name = q.Name, Count = q.Dealings.Count}).Take(5).ToList();
+
+            return top.ToDictionary(g => g.Name, g => g.Count);
+        }
     }
 }

@@ -121,6 +121,16 @@ namespace WebInterface.Controllers
             ViewBag.Message = "Deleting succeeded";
             return PartialView("DeleteSalesAns");
         }
+        
+        public JsonResult Statistic()
+        {
+            var stat = BO.GetStatistic();
+
+            var data = from c in stat.Top5GoodsBySalesCount
+                   select new { Name = c.Key, Value = c.Value };
+
+            return Json(data);
+        }
 
 
         private SaleModel GetSaleModel(AddSaleViewModel view)

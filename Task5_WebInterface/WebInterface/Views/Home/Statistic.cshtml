@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Statistic";
+}
+<h2>@ViewBag.Title.</h2>
+
+<div class="text-center">
+    <img id="loading" src="@Url.Content("~/Content/Images/loading_spinner.gif")" style="display: none" alt="Loading..."/>
+    <div id="chart_div"></div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("https://www.google.com/jsapi")
+    @Scripts.Render("~/scripts/statistic.js")
+}

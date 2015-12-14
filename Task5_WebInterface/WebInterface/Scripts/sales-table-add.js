@@ -1,6 +1,5 @@
 
 function validate() {
-    console.log("asda");
     var date = document.getElementById("Date");
     var goods = document.getElementById("Goods");
     var manager = document.getElementById("Manager");

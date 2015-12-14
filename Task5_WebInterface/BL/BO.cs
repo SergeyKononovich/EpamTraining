@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using BL.IDAL;
 using BL.Services;
@@ -26,6 +27,7 @@ namespace BL
             Mapper.CreateMap<BL.Models.SaleOrderColumn, SaleOrderColumn>().ReverseMap();
             Mapper.CreateMap<BL.Models.SaleSortOption, SaleSortOption>().ReverseMap();
             Mapper.CreateMap<BL.Models.SalesSortingOptions, SalesSortingOptions>().ReverseMap();
+            Mapper.CreateMap<BL.Models.Statistic, Statistic>().ReverseMap();
         }
         public BO(IDAO dao)
         {
@@ -62,5 +64,15 @@ namespace BL
         public IGoodsService GoodsService { get; }
         public IManagerService ManagerService { get; }
         public ISaleService SaleService { get; }
+
+        public Statistic GetStatistic()
+        {
+            var statBL = new BL.Models.Statistic
+            {
+                Top5GoodsBySalesCount = DAO.Top5GoodsBySalesCount()
+            };
+
+            return Mapper.Map<UIPart.Models.Statistic>(statBL);
+        }
     }
 }

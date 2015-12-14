@@ -67,6 +67,7 @@
     <Compile Include="Models\SaleModel.cs" />
     <Compile Include="Models\SalesPage.cs" />
     <Compile Include="Models\SalesSortingOptions.cs" />
+    <Compile Include="Models\Statistic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClientService.cs" />
     <Compile Include="Services\GoodsService.cs" />

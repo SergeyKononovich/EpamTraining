@@ -19,11 +19,16 @@ namespace WebInterface.Controllers
         {
             return View();
         }
-        
+
+        public ActionResult Statistic()
+        {
+            return View();
+        }
+
         [AllowAnonymous]
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Service for sales management.";
 
             return View();
         }

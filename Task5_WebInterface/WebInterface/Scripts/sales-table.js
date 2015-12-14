@@ -1,3 +1,51 @@
+function validate() {
+    var fromId = document.getElementById("FromId");
+    var toId = document.getElementById("ToId");
+    var fromDate = document.getElementById("FromDate");
+    var toDate = document.getElementById("ToDate");
+    var goodsNamePart = document.getElementById("GoodsNamePart");
+    var managerSecondNamePart = document.getElementById("ManagerSecondNamePart");
+    var clientFullNamePart = document.getElementById("ClientFullNamePart");
+    var fromPrice = document.getElementById("FromPrice");
+    var toPrice = document.getElementById("ToPrice");
+
+    var error = "";
+    if (fromId.value && toId.value) {
+        if (fromId.value > toId.value)
+            error += "\nInvalid id range!";
+    }
+
+    if (fromDate.value && toDate.value) {
+        if (fromDate.value > toDate.value)
+            error += "\nInvalid date range!";
+    }
+
+    if (goodsNamePart.value) {
+        if (goodsNamePart.value.length > 30)
+            error += "\nGoods name part can be in range [1,30]!";
+    }
+
+    if (managerSecondNamePart.value) {
+        if (goodsNamePart.value.length > 30)
+            error += "\nManager second name part can be in range [1,30]!";
+    }
+
+    if (clientFullNamePart.value) {
+        if (clientFullNamePart.value.length > 30)
+            error += "\nClient full name part can be in range [1,30]!";
+    }
+
+    if (fromPrice.value && toPrice.value) {
+        if (fromPrice.value > toPrice.value)
+            error += "\nInvalid price range!";
+    }
+
+    if (error !== "") {
+        alert("Error:" + error);
+        return false;
+    } else return true;
+}
+
 $(document).ready(function () {
 
     $.datepicker.regional[""].dateFormat = "dd/mm/yy";
@@ -125,7 +173,9 @@ $(document).ready(function () {
     });
 
     $("input.column_filter").on("keyup click", function () {
-        t.draw(false);
+        var valid = validate();
+        if (valid)
+            t.draw(false);
     });
 
     $("#modDialog").on("hidden.bs.modal", function(e) {
